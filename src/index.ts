@@ -16,6 +16,10 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/auth", authRouter);
 
+app.use("/", (req: Request, res: Response) => {
+  res.send("Hello world");
+});
+
 app.use((req, res) => {
   return res.status(404).json({
     error: {
