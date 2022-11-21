@@ -1,5 +1,6 @@
 import "dotenv/config";
 import { Sequelize } from "sequelize-typescript";
+import { User } from "./user.model";
 export const configSequelize = () => {
   const env = process.env.ENV;
   if (env === "local") {
@@ -9,9 +10,10 @@ export const configSequelize = () => {
       dialect: "postgres",
       username: "postgres",
       password: process.env.LOCAL_DATABASE_PASSWORD,
-      models: [__dirname + "/models"],
+      models: [User],
     });
   } else {
+    console.log("object");
     return new Sequelize({
       host: process.env.HOST,
       port: 5432,
@@ -19,7 +21,7 @@ export const configSequelize = () => {
       dialect: "postgres",
       username: process.env.POSTGRES_USERNAME,
       password: process.env.POSTGRES_PASSWORD,
-      models: [__dirname + "/models"],
+      models: [User],
       dialectOptions: {
         ssl: {
           require: true,
