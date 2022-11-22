@@ -5,12 +5,12 @@ import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
 import { Op } from "sequelize";
 import { User } from "../../models/user.model";
-import { RegisterSchema } from "../../validators/registerSchema";
+// import { RegisterSchema } from "../../validators/registerSchema";
 // import 'express-async-errors';
 export const salt = 10;
 export const registerUser = async (req: express.Request, res: express.Response, next: NextFunction) => {
   try {
-    await RegisterSchema.validateAsync({ ...req.body });
+    // await RegisterSchema.validateAsync({ ...req.body });
     const user = await User.findOne({
       where: {
         [Op.or]: [

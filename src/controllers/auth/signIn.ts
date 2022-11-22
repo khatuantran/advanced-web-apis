@@ -4,10 +4,10 @@ import express, { NextFunction } from "express";
 import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
 import { User } from "../../models/user.model";
-import { SignInSchema } from "../../validators/signInSchema";
+// import { SignInSchema } from "../../validators/signInSchema";
 export const signIn = async (req: express.Request, res: express.Response, next: NextFunction) => {
   try {
-    await SignInSchema.validateAsync({ ...req.body });
+    // await SignInSchema.validateAsync({ ...req.body });
     const user = await User.findOne({
       where: {
         username: req.body.username,
