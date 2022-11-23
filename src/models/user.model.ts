@@ -1,4 +1,8 @@
 import { Column, DataType, Model, PrimaryKey, Table } from "sequelize-typescript";
+export const enum UserStatus {
+  ACTIVE = "active",
+  IN_ACTIVE = "inactive",
+}
 @Table({
   tableName: "user",
   timestamps: false,
@@ -22,4 +26,10 @@ export class User extends Model {
 
   @Column
   tokenCounter: number;
+
+  @Column
+  status: UserStatus;
+
+  @Column
+  activateString: string;
 }

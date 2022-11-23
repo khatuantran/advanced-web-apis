@@ -57,6 +57,11 @@ export const registerUser = async (req: express.Request, res: express.Response, 
       },
     });
   } catch (err) {
-    return next(err);
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      status: StatusCodes.BAD_REQUEST,
+      error: {
+        message: err.message,
+      },
+    });
   }
 };

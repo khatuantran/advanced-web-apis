@@ -52,6 +52,11 @@ export const signIn = async (req: express.Request, res: express.Response, next: 
       },
     });
   } catch (err) {
-    next(err);
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      error: {
+        code: "bad_request",
+        message: err.message,
+      },
+    });
   }
 };

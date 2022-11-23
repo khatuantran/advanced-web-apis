@@ -6,6 +6,7 @@ import path from "path";
 import { applyPassportStrategy } from "./middlewares/passport";
 import { configSequelize } from "./models/sequelize";
 import authRouter from "./routers/auth";
+import userRouter from "./routers/user";
 const app: Express = express();
 app.use(cors());
 applyPassportStrategy(passport);
@@ -16,6 +17,7 @@ app.use(express.static(path.join(__dirname, "public")));
 
 app.use("/auth", authRouter);
 
+app.use("/user", passport.authenticate("jwt", { session: false }), userRouter);
 app.use("/", (req: Request, res: Response) => {
   res.send("Hello world");
 });
@@ -23,7 +25,7 @@ app.use("/", (req: Request, res: Response) => {
 app.use((req, res) => {
   return res.status(404).json({
     error: {
-      status: 400,
+      status: 404,
       message: "Not found",
     },
   });
