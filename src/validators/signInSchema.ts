@@ -1,5 +1,5 @@
-import Joi from "Joi";
-export const SignInSchema = Joi.object({
-  username: Joi.string().required(),
-  password: Joi.string().required(),
+import joi from "joi";
+export const SignInSchema = joi.object({
+  username: joi.string().required(),
+  password: joi.string().required(),
 });
