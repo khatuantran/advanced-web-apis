@@ -6,8 +6,23 @@ import path from "path";
 import { applyPassportStrategy } from "./middlewares/passport";
 import { configSequelize } from "./models/sequelize";
 import authRouter from "./routers/auth";
+import groupRouter from "./routers/group";
 import userRouter from "./routers/user";
+
+declare global {
+  // eslint-disable-next-line @typescript-eslint/no-namespace
+  namespace Express {
+    interface User {
+      id: string;
+      fullName: string;
+      username: string;
+      email: string;
+      password: string;
+    }
+  }
+}
 const app: Express = express();
+
 app.use(cors());
 applyPassportStrategy(passport);
 app.use(express.json());
@@ -18,6 +33,9 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/auth", authRouter);
 
 app.use("/user", passport.authenticate("jwt", { session: false }), userRouter);
+
+app.use("/group", passport.authenticate("jwt", { session: false }), groupRouter);
+
 app.use("/", (req: Request, res: Response) => {
   res.send("Hello world");
 });

@@ -1,6 +1,6 @@
 import bcrypt from "bcrypt";
 import "dotenv/config";
-import express, { NextFunction } from "express";
+import express from "express";
 import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
 import { Op } from "sequelize";
@@ -8,7 +8,7 @@ import { User } from "../../models/user.model";
 import { RegisterSchema } from "../../validators/registerSchema";
 // import 'express-async-errors';
 export const salt = 10;
-export const registerUser = async (req: express.Request, res: express.Response, next: NextFunction) => {
+export const registerUser = async (req: express.Request, res: express.Response) => {
   try {
     await RegisterSchema.validateAsync({ ...req.body });
     const user = await User.findOne({
@@ -46,8 +46,8 @@ export const registerUser = async (req: express.Request, res: express.Response, 
       { expiresIn: "360 days" },
     );
 
-    return res.status(StatusCodes.ACCEPTED).json({
-      status: 200,
+    return res.status(StatusCodes.CREATED).json({
+      status: 201,
       data: {
         id: userCreated.id,
         fullName: userCreated.fullName,

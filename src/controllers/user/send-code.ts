@@ -19,7 +19,7 @@ export const sendActiveCode = async (req: express.Request, res: express.Response
     );
     console.log(effected);
     sendActiveAccountEmail(req.user.email, activateString);
-    return res.status(StatusCodes.ACCEPTED).json({
+    return res.status(StatusCodes.OK).json({
       status: 200,
       data: {
         code: "success",

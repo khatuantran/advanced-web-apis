@@ -1,11 +1,11 @@
 import bcrypt from "bcrypt";
 import "dotenv/config";
-import express, { NextFunction } from "express";
+import express from "express";
 import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
 import { User } from "../../models/user.model";
 import { SignInSchema } from "../../validators/signInSchema";
-export const signIn = async (req: express.Request, res: express.Response, next: NextFunction) => {
+export const signIn = async (req: express.Request, res: express.Response) => {
   try {
     await SignInSchema.validateAsync({ ...req.body });
     const user = await User.findOne({
@@ -41,7 +41,7 @@ export const signIn = async (req: express.Request, res: express.Response, next: 
       { expiresIn: "360 days" },
     );
 
-    return res.status(StatusCodes.ACCEPTED).json({
+    return res.status(StatusCodes.OK).json({
       status: 200,
       data: {
         id: user.id,
