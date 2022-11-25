@@ -3,21 +3,21 @@ import "dotenv/config";
 import express from "express";
 import { StatusCodes } from "http-status-codes";
 import jwt from "jsonwebtoken";
-import { User } from "../../models/user.model";
+import { User, UserStatus } from "../../models/user.model";
 import { SignInSchema } from "../../validators/signInSchema";
 export const signIn = async (req: express.Request, res: express.Response) => {
   try {
     await SignInSchema.validateAsync({ ...req.body });
     const user = await User.findOne({
       where: {
-        username: req.body.username,
+        email: req.body.email,
       },
     });
     if (!user) {
       return res.status(StatusCodes.UNAUTHORIZED).json({
         error: {
-          code: "invalid_username",
-          message: "invalid username",
+          code: "invalid_email",
+          message: "invalid email",
         },
       });
     }
@@ -32,6 +32,14 @@ export const signIn = async (req: express.Request, res: express.Response) => {
       });
     }
 
+    if (user.status === UserStatus.IN_ACTIVE) {
+      return res.status(StatusCodes.FORBIDDEN).json({
+        error: {
+          code: "user_inactive",
+          message: "User inactive",
+        },
+      });
+    }
     const token = jwt.sign(
       {
         id: user.id,
@@ -46,8 +54,8 @@ export const signIn = async (req: express.Request, res: express.Response) => {
       data: {
         id: user.id,
         fullName: user.fullName,
-        username: user.username,
         email: user.email,
+        status: user.status,
         accessToken: token,
       },
     });

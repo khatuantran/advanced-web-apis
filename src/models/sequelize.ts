@@ -15,7 +15,6 @@ export const configSequelize = () => {
       models: [User, Group, UserGroup],
     });
   } else {
-    console.log("object");
     return new Sequelize({
       host: process.env.HOST,
       port: 5432,

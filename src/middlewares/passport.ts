@@ -1,7 +1,7 @@
 import "dotenv/config";
 import { PassportStatic } from "passport";
 import { ExtractJwt, Strategy } from "passport-jwt";
-import { User } from "../models/user.model";
+import { User, UserStatus } from "../models/user.model";
 export const applyPassportStrategy = (passport: PassportStatic) => {
   const options = {
     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -13,6 +13,7 @@ export const applyPassportStrategy = (passport: PassportStatic) => {
         const user = await User.findOne({
           where: {
             id: payload.id,
+            status: UserStatus.ACTIVE,
           },
         });
         if (!user) {
@@ -21,7 +22,6 @@ export const applyPassportStrategy = (passport: PassportStatic) => {
         return done(null, {
           id: user.id,
           fullName: user.fullName,
-          username: user.username,
           email: user.email,
           password: user.password,
         });

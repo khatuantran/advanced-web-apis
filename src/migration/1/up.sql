@@ -1,7 +1,6 @@
 CREATE TABLE "user"
 (
     "id" UUID NOT NULL DEFAULT gen_random_uuid(),
-    "username" text,
     "password" text,
     "email"    text,
     "fullName" text,
@@ -9,6 +8,5 @@ CREATE TABLE "user"
     "status" text DEFAULT 'inactive',
     "activateString" text NULL,
     PRIMARY KEY ("id"),
-    UNIQUE ("email"),
-    UNIQUE ("username")
+    UNIQUE ("email")
 );

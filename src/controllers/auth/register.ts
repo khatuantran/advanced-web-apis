@@ -2,9 +2,10 @@ import bcrypt from "bcrypt";
 import "dotenv/config";
 import express from "express";
 import { StatusCodes } from "http-status-codes";
-import jwt from "jsonwebtoken";
+import Randomstring from "randomstring";
 import { Op } from "sequelize";
 import { User } from "../../models/user.model";
+import { sendActiveAccountEmail } from "../../utils/active-account-email";
 import { RegisterSchema } from "../../validators/registerSchema";
 // import 'express-async-errors';
 export const salt = 10;
@@ -15,7 +16,7 @@ export const registerUser = async (req: express.Request, res: express.Response) 
       where: {
         [Op.or]: [
           {
-            username: req.body.username,
+            email: req.body.email,
           },
         ],
       },
@@ -24,42 +25,38 @@ export const registerUser = async (req: express.Request, res: express.Response) 
       return res.status(StatusCodes.BAD_REQUEST).json({
         status: StatusCodes.BAD_REQUEST,
         error: {
+          code: "account_exist",
           message: "account exist",
         },
       });
     }
+    const activateString = Randomstring.generate(6);
 
     const hashPassword = await bcrypt.hash(req.body.password, salt);
     const userCreated = await User.create({
       username: req.body.username,
       password: hashPassword,
-      email: req.body.email ? req.body.email : null,
+      email: req.body.email,
       fullName: req.body.fullName,
+      activateString: activateString,
     });
 
-    const token = jwt.sign(
-      {
-        id: userCreated.id,
-        tokenCounter: 0,
-      },
-      process.env.AUTH_SECRET,
-      { expiresIn: "360 days" },
-    );
+    await sendActiveAccountEmail(req.body.email, activateString);
 
     return res.status(StatusCodes.CREATED).json({
       status: 201,
       data: {
         id: userCreated.id,
         fullName: userCreated.fullName,
-        username: userCreated.username,
         email: userCreated.email,
-        accessToken: token,
+        status: userCreated.status,
       },
     });
   } catch (err) {
     return res.status(StatusCodes.BAD_REQUEST).json({
       status: StatusCodes.BAD_REQUEST,
       error: {
+        code: "bad_request",
         message: err.message,
       },
     });

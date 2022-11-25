@@ -1,12 +1,13 @@
 import "dotenv/config";
-import express, { NextFunction } from "express";
+import express from "express";
 import { StatusCodes } from "http-status-codes";
+import jwt from "jsonwebtoken";
 import { User, UserStatus } from "../../models/user.model";
-export const activateAccount = async (req: express.Request, res: express.Response, next: NextFunction) => {
+export const activateAccount = async (req: express.Request, res: express.Response) => {
   try {
     const user = await User.findOne({
       where: {
-        id: req.user.id,
+        email: req.body.email,
       },
     });
     if (!user) {
@@ -39,14 +40,36 @@ export const activateAccount = async (req: express.Request, res: express.Respons
     await user.update({
       status: UserStatus.ACTIVE,
     });
-    return res.status(StatusCodes.ACCEPTED).json({
-      status: StatusCodes.ACCEPTED,
+
+    const token = jwt.sign(
+      {
+        id: user.id,
+        tokenCounter: user,
+      },
+      process.env.AUTH_SECRET,
+      { expiresIn: "360 days" },
+    );
+    return res.status(StatusCodes.OK).json({
+      status: StatusCodes.OK,
       data: {
         code: "success",
+        user: {
+          id: user.id,
+          fullName: user.fullName,
+          email: user.email,
+          status: user.status,
+          accessToken: token,
+        },
         message: "Activate account success",
       },
     });
   } catch (err) {
-    return next(err);
+    return res.status(StatusCodes.BAD_REQUEST).json({
+      status: StatusCodes.BAD_REQUEST,
+      error: {
+        code: "bad_request",
+        message: err.message,
+      },
+    });
   }
 };
