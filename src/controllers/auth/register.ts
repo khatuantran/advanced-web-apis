@@ -34,7 +34,6 @@ export const registerUser = async (req: express.Request, res: express.Response) 
 
     const hashPassword = await bcrypt.hash(req.body.password, salt);
     const userCreated = await User.create({
-      username: req.body.username,
       password: hashPassword,
       email: req.body.email,
       fullName: req.body.fullName,
