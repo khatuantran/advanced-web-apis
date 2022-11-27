@@ -1,7 +1,13 @@
 import express from "express";
-import { createGroup } from "../controllers/group/create-group";
-import { listGroup } from "../controllers/group/list-group";
+import { createGroup, groupDetail, listUserGroup } from "../controllers/group";
+import { generateInviteLink } from "../controllers/group/generate-invitation-link";
+import { getInviteLink } from "../controllers/group/get-invitation-link";
+import { joinGroupByLink } from "../controllers/group/join-group-link";
 const groupRouter = express.Router();
 groupRouter.post("/create", createGroup);
-groupRouter.get("/list-group", listGroup);
-export default groupRouter;
+groupRouter.get("/list-group", listUserGroup);
+groupRouter.get("/:groupId/detail", groupDetail);
+groupRouter.get("/:groupId/get-invite-link", getInviteLink);
+groupRouter.get("/:groupId/generate-invite-link", generateInviteLink);
+groupRouter.get("/join-by-link", joinGroupByLink);
+export { groupRouter };

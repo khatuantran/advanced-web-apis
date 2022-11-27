@@ -3,12 +3,10 @@ import cors from "cors";
 import express, { Express, NextFunction, Request, Response } from "express";
 import passport from "passport";
 import path from "path";
-import { applyPassportStrategy } from "./middlewares/passport";
-import { configSequelize } from "./models/sequelize";
-import authRouter from "./routers/auth";
-import groupRouter from "./routers/group";
-import userRouter from "./routers/user";
-
+import { applyPassportStrategy } from "./middlewares";
+import { authRouter, groupRouter, userRouter } from "./routers";
+import { configSequelize } from "./utils";
+import { configAssociation } from "./utils/config-association";
 declare global {
   // eslint-disable-next-line @typescript-eslint/no-namespace
   namespace Express {
@@ -17,6 +15,8 @@ declare global {
       fullName: string;
       email: string;
       password: string;
+      tokenCounter: number;
+      provider: string;
     }
   }
 }
@@ -54,9 +54,10 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
 });
 
 const connectDBAndStartServer = async () => {
-  const sequelize = configSequelize();
   const port = process.env.PORT || 3000;
   try {
+    const sequelize = configSequelize();
+    configAssociation();
     await sequelize.authenticate();
     app.listen(port, () => {
       console.log(`Listening on port ${port}`);

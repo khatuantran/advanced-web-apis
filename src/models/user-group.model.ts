@@ -13,7 +13,7 @@ export const enum GroupRole {
   tableName: "user_group",
   timestamps: false,
 })
-export class UserGroup extends Model {
+export class UserGroup extends Model<UserGroup> {
   @PrimaryKey
   @ForeignKey(() => User)
   @Column({ type: DataType.UUID })

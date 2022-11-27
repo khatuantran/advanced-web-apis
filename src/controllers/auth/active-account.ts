@@ -1,8 +1,8 @@
 import "dotenv/config";
 import express from "express";
 import { StatusCodes } from "http-status-codes";
-import jwt from "jsonwebtoken";
 import { User, UserStatus } from "../../models/user.model";
+import { generateToken } from "../../utils";
 export const activateAccount = async (req: express.Request, res: express.Response) => {
   try {
     const user = await User.findOne({
@@ -41,14 +41,8 @@ export const activateAccount = async (req: express.Request, res: express.Respons
       status: UserStatus.ACTIVE,
     });
 
-    const token = jwt.sign(
-      {
-        id: user.id,
-        tokenCounter: user,
-      },
-      process.env.AUTH_SECRET,
-      { expiresIn: "360 days" },
-    );
+    const token = generateToken(user.id, user.tokenCounter);
+
     return res.status(StatusCodes.OK).json({
       status: StatusCodes.OK,
       data: {

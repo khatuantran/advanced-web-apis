@@ -3,30 +3,41 @@ export const enum UserStatus {
   ACTIVE = "active",
   IN_ACTIVE = "inactive",
 }
+export const enum UserProvider {
+  MANUAL = "manual",
+  GOOGLE = "google",
+}
+
 @Table({
   tableName: "user",
   timestamps: false,
 })
-export class User extends Model {
+export class User extends Model<User> {
   @PrimaryKey
   @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4 })
-  id: string;
+  public id: string;
 
   @Column
-  fullName: string;
+  public fullName: string;
 
   @Column
-  password: string;
+  public password: string;
 
   @Column
-  email: string;
+  public email: string;
 
   @Column
-  tokenCounter: number;
+  public tokenCounter: number;
 
   @Column
-  status: UserStatus;
+  public status: UserStatus;
 
   @Column
-  activateString: string;
+  public provider: UserProvider;
+
+  @Column
+  public activateString: string;
+
+  // @HasMany(() => UserGroup)
+  // public groups: UserGroup[];
 }

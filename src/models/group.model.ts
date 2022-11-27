@@ -1,30 +1,33 @@
 import { BelongsTo, Column, DataType, ForeignKey, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { UserGroup } from "./user-group.model";
 import { User } from "./user.model";
 
 @Table({
   tableName: "group",
   timestamps: false,
 })
-export class Group extends Model {
+export class Group extends Model<Group> {
   @PrimaryKey
   @Column({ type: DataType.UUID, defaultValue: DataType.UUIDV4 })
-  id: string;
+  public id: string;
 
   @Column
-  name: string;
+  public name: string;
 
   @Column
-  isPublic: boolean;
+  public isPublic: boolean;
 
   @ForeignKey(() => User)
   @Column
-  ownerId: string;
+  public ownerId: string;
   @BelongsTo(() => User, "ownerId")
   public owner: User;
 
   @Column
-  invitationLink: string;
+  public invitationLink: string;
 
   @Column
-  status: string;
+  public status: string;
+
+  public users: UserGroup[];
 }
