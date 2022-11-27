@@ -1,4 +1,5 @@
 import { Column, DataType, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { UserGroup } from "./user-group.model";
 export const enum UserStatus {
   ACTIVE = "active",
   IN_ACTIVE = "inactive",
@@ -38,6 +39,5 @@ export class User extends Model<User> {
   @Column
   public activateString: string;
 
-  // @HasMany(() => UserGroup)
-  // public groups: UserGroup[];
+  public groups: UserGroup[];
 }

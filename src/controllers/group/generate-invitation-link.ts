@@ -39,15 +39,6 @@ export const generateInviteLink = async (req: express.Request, res: express.Resp
     await group.update({
       invitationLink: link,
     });
-    console.log(link);
-    // let link;
-    // if (process.env.PORT) {
-    //   link = "https://" + req.hostname;
-    // } else link = "http://" + req.hostname + ":" + 3000;
-    // link = link + `/group/${group.id}/get-invitation-link`;
-    // await group.update({
-    //   invitationLink: link,
-    // });
 
     return res.status(StatusCodes.OK).json({
       code: StatusCodes.OK,

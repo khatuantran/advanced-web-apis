@@ -4,54 +4,32 @@ import { StatusCodes } from "http-status-codes";
 import { Group } from "../../models";
 import { GroupRole, UserGroup } from "../../models/user-group.model";
 //group/join-by-link?link=groupid-random-string(12)
-export const joinGroupByLink = async (req: express.Request, res: express.Response) => {
+export const joinGroupByEmail = async (req: express.Request, res: express.Response) => {
   try {
-    if (!req.query.link) {
+    if (!req.query.userId || !req.query.groupId || !req.query.inviteString) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         status: StatusCodes.BAD_REQUEST,
         error: {
-          code: "link_not_found",
+          code: "invalid_query",
           message: "Link not found",
-        },
-      });
-    }
-    const link = req.query.link as string;
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const [groupId, _] = link.split("-random-");
-    if (link.length < 2) {
-      return res.status(StatusCodes.BAD_REQUEST).json({
-        status: StatusCodes.BAD_REQUEST,
-        error: {
-          code: "invalid_link",
-          message: "Invalid link",
         },
       });
     }
     const group = await Group.findOne({
       where: {
-        id: groupId,
+        id: req.query.groupId as string,
       },
       include: [
         {
           model: UserGroup,
           as: "users",
           where: {
-            userId: req.user.id,
+            userId: req.query.userId as string,
           },
           required: false,
         },
       ],
     });
-
-    if (!group) {
-      return res.status(StatusCodes.BAD_REQUEST).json({
-        status: StatusCodes.BAD_REQUEST,
-        error: {
-          code: "group_not_found",
-          message: "Group not found",
-        },
-      });
-    }
 
     if (group.users.length > 0) {
       return res.status(StatusCodes.BAD_REQUEST).json({
@@ -62,8 +40,17 @@ export const joinGroupByLink = async (req: express.Request, res: express.Respons
         },
       });
     }
+    if (!group) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        status: StatusCodes.BAD_REQUEST,
+        error: {
+          code: "group_not_found",
+          message: "Group not found",
+        },
+      });
+    }
 
-    if (group.invitationLink !== req.query.link) {
+    if (group.invitationLink !== req.query.inviteString) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         status: StatusCodes.BAD_REQUEST,
         error: {
@@ -73,15 +60,14 @@ export const joinGroupByLink = async (req: express.Request, res: express.Respons
       });
     }
     await UserGroup.create({
-      userId: req.user.id,
-      groupId: groupId,
+      userId: req.query.userId as string,
+      groupId: req.query.groupId as string,
       role: GroupRole.MEMBER,
     });
     return res.status(StatusCodes.OK).json({
       code: StatusCodes.OK,
       data: {
-        groupId: groupId,
-        userId: req.user.id,
+        message: "success",
       },
     });
   } catch (err) {
