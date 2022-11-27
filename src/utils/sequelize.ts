@@ -20,6 +20,7 @@ export const configSequelize = () => {
       dialect: "postgres",
       username: process.env.POSTGRES_USERNAME,
       password: process.env.POSTGRES_PASSWORD,
+      models: [User, Group, UserGroup],
       dialectOptions: {
         ssl: {
           require: true,
