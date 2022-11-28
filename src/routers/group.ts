@@ -5,7 +5,6 @@ import {
   generateInviteLink,
   getInviteLink,
   groupDetail,
-  joinGroupByEmail,
   joinGroupByLink,
   kickOut,
   leaveGroup,
@@ -25,6 +24,4 @@ groupRouter.post("/:groupId/kick-out", kickOut);
 groupRouter.post("/:groupId/leave-group", leaveGroup);
 groupRouter.post("/:groupId/send-invite-email", sendInvitationEmail);
 groupRouter.get("/join-by-link", joinGroupByLink);
-groupRouter.get("/join-by-email", joinGroupByEmail);
-
 export { groupRouter };

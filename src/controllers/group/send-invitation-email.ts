@@ -1,34 +1,19 @@
 import "dotenv/config";
 import express from "express";
 import { StatusCodes } from "http-status-codes";
-import { Op } from "sequelize";
 import { Group, User } from "../../models";
 import { GroupRole, UserGroup } from "../../models/user-group.model";
 import { sendInvitationGroupEmail } from "../../utils";
 import { SendInvitationSchema } from "../../validators";
 //group/join-by-link?link=groupid-random-string(12)
 export interface IInvitationJoinGroup {
-  id: string;
   email: string;
-  fullName: string;
   link: string;
 }
 export const sendInvitationEmail = async (req: express.Request, res: express.Response) => {
   try {
     await SendInvitationSchema.validateAsync({ ...req.body });
-    const users = await User.findAll({
-      where: {
-        email: {
-          [Op.in]: req.body.emails,
-        },
-      },
-      include: [
-        {
-          model: UserGroup,
-          as: "groups",
-        },
-      ],
-    });
+    const userEmails = req.body.emails as string[];
     const userGroup = await UserGroup.findOne({
       where: {
         userId: req.user.id,
@@ -57,33 +42,20 @@ export const sendInvitationEmail = async (req: express.Request, res: express.Res
         },
       });
     }
-    const trueUsers = users.filter((user) => {
-      if (
-        user.groups.find((group) => {
-          return group.groupId === req.params.groupId;
-        })
-      ) {
-        return false;
-      }
-      return true;
-    });
+
     let inviteObjects: IInvitationJoinGroup[];
     if (process.env.PORT) {
-      inviteObjects = trueUsers.map((user) => {
+      inviteObjects = userEmails.map((userEmail) => {
         return {
-          id: user.id,
-          fullName: user.fullName,
-          email: user.email,
-          link: `https://${req.hostname}/group/join-by-email?userId=${user.id}&&groupId=${req.params.groupId}&&inviteString=${userGroup.group.invitationLink}`,
+          email: userEmail,
+          link: `https://midterm-ptudwnc.vercel.app/join-group-by-link/${userGroup.group.invitationLink}`,
         } as IInvitationJoinGroup;
       });
     } else {
-      inviteObjects = trueUsers.map((user) => {
+      inviteObjects = userEmails.map((userEmail) => {
         return {
-          id: user.id,
-          fullName: user.fullName,
-          email: user.email,
-          link: `http://${req.hostname}:3000/group/join-by-email?userId=${user.id}&&groupId=${req.params.groupId}&&inviteString=${userGroup.group.invitationLink}`,
+          email: userEmail,
+          link: `https://midterm-ptudwnc.vercel.app/join-group-by-link/${userGroup.group.invitationLink}`,
         } as IInvitationJoinGroup;
       });
     }

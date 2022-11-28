@@ -1,8 +1,10 @@
 import express from "express";
 import { changePassword, updateInformation } from "../controllers/user";
+import { getUserProfile } from "../controllers/user/get-profile";
 // import { activateAccount } from "../controllers/user/active-account";
 // import { sendActiveCode } from "../controllers/auth/send-code";
 const userRouter = express.Router();
+userRouter.get("/profile", getUserProfile);
 userRouter.post("/change-password", changePassword);
 userRouter.post("/update-information", updateInformation);
 // userRouter.post("/active-account", activateAccount);
