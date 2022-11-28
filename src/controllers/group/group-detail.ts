@@ -37,6 +37,7 @@ export const groupDetail = async (req: express.Request, res: express.Response) =
       code: StatusCodes.OK,
       data: {
         information: {
+          id: group.id,
           name: group.name,
           memberNumber: group.users.length,
         },
