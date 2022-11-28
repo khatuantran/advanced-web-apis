@@ -7,6 +7,16 @@ import { Group } from "../../models/group.model";
 // /group/:groupId/detail
 export const groupDetail = async (req: express.Request, res: express.Response) => {
   try {
+    const userGroup = await UserGroup.findOne({ where: { userId: req.user.id } });
+    if (!userGroup) {
+      return res.status(StatusCodes.BAD_REQUEST).json({
+        status: StatusCodes.BAD_REQUEST,
+        error: {
+          code: "permission_denied",
+          message: "User doesn't join this group",
+        },
+      });
+    }
     const group = await Group.findOne({
       where: {
         id: req.params.groupId,
@@ -40,6 +50,7 @@ export const groupDetail = async (req: express.Request, res: express.Response) =
           id: group.id,
           name: group.name,
           memberNumber: group.users.length,
+          currentUserRole: userGroup.role,
         },
         owner: {
           id: group.owner.id,
