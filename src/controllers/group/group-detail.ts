@@ -7,7 +7,7 @@ import { Group } from "../../models/group.model";
 // /group/:groupId/detail
 export const groupDetail = async (req: express.Request, res: express.Response) => {
   try {
-    const userGroup = await UserGroup.findOne({ where: { userId: req.user.id } });
+    const userGroup = await UserGroup.findOne({ where: { userId: req.user.id, groupId: req.params.groupId } });
     if (!userGroup) {
       return res.status(StatusCodes.BAD_REQUEST).json({
         status: StatusCodes.BAD_REQUEST,
