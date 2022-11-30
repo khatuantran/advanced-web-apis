@@ -2,6 +2,7 @@ import "dotenv/config";
 import express from "express";
 import { StatusCodes } from "http-status-codes";
 import { Op, WhereOptions } from "sequelize";
+import { User } from "../../models";
 import { Group } from "../../models/group.model";
 import { GroupRole, UserGroup } from "../../models/user-group.model";
 // import 'express-async-errors';
@@ -31,6 +32,12 @@ export const listUserGroup = async (req: express.Request, res: express.Response)
           {
             model: Group,
             as: "group",
+            include: [
+              {
+                model: User,
+                as: "owner",
+              },
+            ],
           },
         ],
       })
@@ -39,6 +46,8 @@ export const listUserGroup = async (req: express.Request, res: express.Response)
         groupId: userGroup.group.id,
         groupName: userGroup.group.name,
         role: userGroup.role,
+        ownerName: userGroup.group.owner.fullName,
+        ownerEmail: userGroup.group.owner.email,
       };
     });
     return res.status(StatusCodes.OK).json({
