@@ -1,6 +1,6 @@
 import "dotenv/config";
 import { Sequelize } from "sequelize-typescript";
-import { Group, User, UserGroup } from "../models";
+import { Group, Presentation, Slide, User, UserGroup } from "../models";
 export const configSequelize = () => {
   const env = process.env.ENV;
   if (env === "local") {
@@ -10,7 +10,7 @@ export const configSequelize = () => {
       dialect: "postgres",
       username: "postgres",
       password: process.env.LOCAL_DATABASE_PASSWORD,
-      models: [User, Group, UserGroup],
+      models: [User, Group, UserGroup, Presentation, Slide],
     });
   } else {
     return new Sequelize({
@@ -20,7 +20,7 @@ export const configSequelize = () => {
       dialect: "postgres",
       username: process.env.POSTGRES_USERNAME,
       password: process.env.POSTGRES_PASSWORD,
-      models: [User, Group, UserGroup],
+      models: [User, Group, UserGroup, Presentation, Slide],
       dialectOptions: {
         ssl: {
           require: true,

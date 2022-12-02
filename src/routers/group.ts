@@ -11,7 +11,7 @@ import {
   listUserGroup,
   sendInvitationEmail,
   transferGroup,
-} from "../controllers/group";
+} from "../controllers";
 const groupRouter = express.Router();
 groupRouter.post("/create", createGroup);
 groupRouter.get("/list-group", listUserGroup);

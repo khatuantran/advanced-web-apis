@@ -4,7 +4,7 @@ import express, { Express, NextFunction, Request, Response } from "express";
 import passport from "passport";
 import path from "path";
 import { applyPassportStrategy } from "./middlewares";
-import { authRouter, groupRouter, userRouter } from "./routers";
+import { authRouter, groupRouter, presentationRouter, userRouter } from "./routers";
 import { configSequelize } from "./utils";
 import { configAssociation } from "./utils/config-association";
 declare global {
@@ -35,9 +35,7 @@ app.use("/user", passport.authenticate("jwt", { session: false }), userRouter);
 
 app.use("/group", passport.authenticate("jwt", { session: false }), groupRouter);
 
-app.use("/", (req: Request, res: Response) => {
-  res.send("Hello world");
-});
+app.use("/presentation", passport.authenticate("jwt", { session: false }), presentationRouter);
 
 app.use((req, res) => {
   return res.status(404).json({
