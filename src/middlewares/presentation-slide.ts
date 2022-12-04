@@ -1,8 +1,8 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { Presentation } from "../models";
 
-export const presentationOfSlide = async (req: Request, res: Response, next: NextFunction) => {
+export const presentationOfSlide = async (req, res: Response, next: NextFunction) => {
   try {
     if (!req.params.presentationId) {
       return res.status(StatusCodes.BAD_GATEWAY).json({
@@ -28,6 +28,7 @@ export const presentationOfSlide = async (req: Request, res: Response, next: Nex
         },
       });
     }
+    req.presentation = presentation;
     next();
   } catch (error) {
     console.log(error);

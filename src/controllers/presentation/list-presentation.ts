@@ -26,6 +26,7 @@ export const listUserPresentation = async (req: express.Request, res: express.Re
         ownerId: presentation.owner.id,
         ownerName: presentation.owner.fullName,
         ownerEmail: presentation.owner.email,
+        presentationId: presentation.id,
         presentationName: presentation.name,
         slideQuantity: presentation.slides?.length || 0,
       };

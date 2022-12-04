@@ -1,15 +1,17 @@
 import "dotenv/config";
 import express from "express";
 import { StatusCodes } from "http-status-codes";
-import { Slide } from "../../models";
+import { Presentation, Slide } from "../../models";
 // import 'express-async-errors';
-export const listPresentationSlide = async (req: express.Request, res: express.Response) => {
+export const listPresentationSlide = async (req, res: express.Response) => {
   try {
+    const presentation = req.presentation as Presentation;
     const slides = (
       await Slide.findAll({
         where: {
           presentationId: req.params.presentationId,
         },
+        order: [["createdAt", "ASC"]],
       })
     ).map((slide) => {
       return {
@@ -21,6 +23,8 @@ export const listPresentationSlide = async (req: express.Request, res: express.R
     return res.status(StatusCodes.OK).json({
       code: StatusCodes.OK,
       data: {
+        presentationId: presentation.id,
+        presentationName: presentation.name,
         slides: slides,
       },
     });
