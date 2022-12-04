@@ -1,10 +1,12 @@
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import express, { Express, NextFunction, Request, Response } from "express";
+import http from "http";
 import passport from "passport";
 import path from "path";
+import { Server } from "socket.io";
 import { applyPassportStrategy } from "./middlewares";
-import { authRouter, groupRouter, userRouter } from "./routers";
+import { authRouter, groupRouter, presentationRouter, userRouter } from "./routers";
 import { configSequelize } from "./utils";
 import { configAssociation } from "./utils/config-association";
 declare global {
@@ -21,7 +23,14 @@ declare global {
   }
 }
 const app: Express = express();
-
+const server = http.createServer(app);
+const io = new Server(server);
+io.on("connection", (socket) => {
+  console.log("a user connected");
+  socket.on("disconnect", () => {
+    console.log("user disconnected");
+  });
+});
 app.use(cors());
 applyPassportStrategy(passport);
 app.use(express.json());
@@ -35,10 +44,11 @@ app.use("/user", passport.authenticate("jwt", { session: false }), userRouter);
 
 app.use("/group", passport.authenticate("jwt", { session: false }), groupRouter);
 
-app.use("/", (req: Request, res: Response) => {
-  res.send("Hello world");
-});
+app.use("/presentation", passport.authenticate("jwt", { session: false }), presentationRouter);
 
+app.get("/", (req, res) => {
+  res.sendFile(__dirname + "/index.html");
+});
 app.use((req, res) => {
   return res.status(404).json({
     error: {
@@ -59,7 +69,7 @@ const connectDBAndStartServer = async () => {
     const sequelize = configSequelize();
     configAssociation();
     await sequelize.authenticate();
-    app.listen(port, () => {
+    server.listen(port, () => {
       console.log(`Listening on port ${port}`);
     });
   } catch (err) {

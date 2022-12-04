@@ -1,5 +1,5 @@
 import express from "express";
-import { activateAccount, registerUser, sendActiveCode, signIn, verifyGoogle } from "../controllers/auth";
+import { activateAccount, registerUser, sendActiveCode, signIn, verifyGoogle } from "../controllers";
 const authRouter = express.Router();
 authRouter.post("/register", registerUser);
 authRouter.post("/sign-in", signIn);

@@ -1,4 +1,5 @@
 import { Column, DataType, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { Presentation } from "./presentation.model";
 import { UserGroup } from "./user-group.model";
 export const enum UserStatus {
   ACTIVE = "active",
@@ -40,4 +41,6 @@ export class User extends Model<User> {
   public activateString: string;
 
   public groups: UserGroup[];
+
+  public presentations: Presentation[];
 }

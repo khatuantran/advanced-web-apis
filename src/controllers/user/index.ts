@@ -1,3 +1,3 @@
-export * from "../group/list-user-group";
 export * from "./change-password";
+export * from "./get-profile";
 export * from "./update-information";
