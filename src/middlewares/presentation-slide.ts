@@ -1,12 +1,9 @@
-import "dotenv/config";
-import express from "express";
+import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { Presentation } from "../../models";
-import { CreatePresentationSchema } from "../../validators/createPresentation";
-// import 'express-async-errors';
-export const editPresentation = async (req: express.Request, res: express.Response) => {
+import { Presentation } from "../models";
+
+export const presentationOfSlide = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    await CreatePresentationSchema.validateAsync({ ...req.body });
     if (!req.params.presentationId) {
       return res.status(StatusCodes.BAD_GATEWAY).json({
         status: StatusCodes.BAD_GATEWAY,
@@ -31,20 +28,14 @@ export const editPresentation = async (req: express.Request, res: express.Respon
         },
       });
     }
-    await presentation.update({ name: req.body.name });
-    return res.status(StatusCodes.OK).json({
-      status: StatusCodes.OK,
-      data: {
-        id: presentation.id,
-        name: presentation.name,
-      },
-    });
-  } catch (err) {
+    next();
+  } catch (error) {
+    console.log(error);
     return res.status(StatusCodes.BAD_REQUEST).json({
       status: StatusCodes.BAD_REQUEST,
       error: {
         code: "bad_request",
-        message: err.message,
+        message: error.message,
       },
     });
   }

@@ -83,10 +83,12 @@ CREATE TABLE "slide"
 (
     "id" UUID NOT NULL,
     "title" text,
-    "option" jsonb,
+    "options" jsonb,
     "type" text,
     "status" text NOT NULL DEFAULT 'active',
     "presentationId" UUID NOT NULL,
+    "isSelected" boolean DEFAULT 'false',
+    "order" integer,
     "createdAt"    timestamptz NOT NULL DEFAULT now(),
     "updatedAt"    timestamptz NOT NULL DEFAULT now(),
     "createdBy"    UUID,

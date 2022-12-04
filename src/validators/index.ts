@@ -1,6 +1,7 @@
 export * from "./assignRoleSchema";
 export * from "./changePasswordSchema";
 export * from "./createGroupSchema";
+export * from "./createSlideSchema";
 export * from "./registerSchema";
 export * from "./sendInvitationSchema";
 export * from "./signInSchema";

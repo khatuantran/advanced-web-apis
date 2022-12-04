@@ -2,6 +2,7 @@ import { BelongsTo, Column, DataType, ForeignKey, Model, PrimaryKey, Table } fro
 import { Presentation } from "./presentation.model";
 
 export type ISlideOption = {
+  index: number;
   content: string;
   chooseNumber: number;
 };
@@ -31,4 +32,7 @@ export class Slide extends Model<Slide> {
 
   @Column
   public isSelected: boolean;
+
+  @Column
+  public order: number;
 }

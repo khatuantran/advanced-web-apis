@@ -22,10 +22,12 @@ CREATE TABLE "slide"
     "status" text NOT NULL DEFAULT 'active',
     "presentationId" UUID NOT NULL,
     "isSelected" boolean DEFAULT 'false',
+    "order" integer,
     "createdAt"    timestamptz NOT NULL DEFAULT now(),
     "updatedAt"    timestamptz NOT NULL DEFAULT now(),
     "createdBy"    UUID,
     "updatedBy"    UUID,
     PRIMARY KEY ("id"),
+    UNIQUE ("order"),
     FOREIGN KEY ("presentationId") REFERENCES "presentation" ("id") ON UPDATE restrict ON DELETE cascade
 );
