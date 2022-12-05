@@ -1,7 +1,8 @@
 import "dotenv/config";
 import express from "express";
 import { StatusCodes } from "http-status-codes";
-import { ISlideOption, Slide } from "../../models";
+import { Sequelize } from "sequelize-typescript";
+import { ISlideOption, Slide, User } from "../../models";
 import { CreateSlideSchema } from "../../validators";
 // import 'express-async-errors';
 export const editSlide = async (req: express.Request, res: express.Response) => {
@@ -20,6 +21,12 @@ export const editSlide = async (req: express.Request, res: express.Response) => 
       where: {
         id: req.params.slideId,
       },
+      include: [
+        {
+          model: User,
+          as: "createdUser",
+        },
+      ],
     });
     if (!slide) {
       return res.status(StatusCodes.NOT_FOUND).json({
@@ -41,6 +48,8 @@ export const editSlide = async (req: express.Request, res: express.Response) => 
           chooseNumber: 0,
         } as ISlideOption;
       }),
+      updatedAt: Sequelize.literal(`now()`),
+      updatedBy: req.user.id,
     });
     return res.status(StatusCodes.OK).json({
       status: StatusCodes.OK,
@@ -52,6 +61,11 @@ export const editSlide = async (req: express.Request, res: express.Response) => 
             content,
           } as ISlideOption;
         }),
+        createdUser: {
+          id: slide.createdUser.id,
+          fullName: slide.createdUser.fullName,
+          email: slide.createdUser.email,
+        },
       },
     });
   } catch (err) {

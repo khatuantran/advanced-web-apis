@@ -2,22 +2,26 @@ import "dotenv/config";
 import express from "express";
 import { StatusCodes } from "http-status-codes";
 import { ISlideOption, Slide } from "../../models";
-import { CreateSlideSchema } from "../../validators";
+import { addHours } from "../../utils";
+// import { CreateSlideSchema } from "../../validators";
 // import 'express-async-errors';
 export const createSlide = async (req: express.Request, res: express.Response) => {
   try {
-    await CreateSlideSchema.validateAsync({ ...req.body });
-    const contents = req.body.contents as string[];
+    // await CreateSlideSchema.validateAsync({ ...req.body });
+    const contents = req.body.contents ? req.body.contents : null;
     const slide = await Slide.create({
-      title: req.body.title,
+      title: req.body.title ? req.body.title : null,
       presentationId: req.params.presentationId,
-      options: contents.map((content, index) => {
-        return {
-          index: index + 1,
-          content,
-          chooseNumber: 0,
-        } as ISlideOption;
-      }),
+      createdBy: req.user.id,
+      options: contents
+        ? contents.map((content, index) => {
+            return {
+              index: index + 1,
+              content,
+              chooseNumber: 0,
+            } as ISlideOption;
+          })
+        : null,
     });
     return res.status(StatusCodes.CREATED).json({
       status: StatusCodes.CREATED,
@@ -25,6 +29,13 @@ export const createSlide = async (req: express.Request, res: express.Response) =
         id: slide.id,
         title: slide.title,
         options: slide.options,
+        createdUser: {
+          id: req.user.id,
+          fullName: req.user.fullName,
+          email: req.user.email,
+        },
+        createdAt: addHours(slide.createdAt, 7),
+        updatedAt: addHours(slide.updatedAt, 7),
       },
     });
   } catch (err) {

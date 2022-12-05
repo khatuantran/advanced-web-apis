@@ -1,7 +1,8 @@
 import "dotenv/config";
 import express from "express";
 import { StatusCodes } from "http-status-codes";
-import { Presentation, Slide } from "../../models";
+import { Presentation, Slide, User } from "../../models";
+import { addHours } from "../../utils";
 // import 'express-async-errors';
 export const listPresentationSlide = async (req, res: express.Response) => {
   try {
@@ -11,6 +12,12 @@ export const listPresentationSlide = async (req, res: express.Response) => {
         where: {
           presentationId: req.params.presentationId,
         },
+        include: [
+          {
+            model: User,
+            as: "createdUser",
+          },
+        ],
         order: [["createdAt", "ASC"]],
       })
     ).map((slide) => {
@@ -18,6 +25,13 @@ export const listPresentationSlide = async (req, res: express.Response) => {
         id: slide.id,
         title: slide.title,
         options: slide.options,
+        createdUser: {
+          id: slide.createdUser.id,
+          fullName: slide.createdUser.fullName,
+          email: slide.createdUser.email,
+        },
+        createdAt: addHours(slide.createdAt, 7),
+        updatedAt: addHours(slide.updatedAt, 7),
       };
     });
     return res.status(StatusCodes.OK).json({

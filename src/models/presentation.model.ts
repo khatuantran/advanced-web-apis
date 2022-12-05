@@ -26,5 +26,11 @@ export class Presentation extends Model<Presentation> {
   @Column
   public status: string;
 
+  @Column(DataType.DATE)
+  public createdAt: Date;
+
+  @Column(DataType.DATE)
+  public updatedAt: Date;
+
   public slides: Slide[];
 }

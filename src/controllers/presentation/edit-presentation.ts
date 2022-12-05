@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import { StatusCodes } from "http-status-codes";
+import { Sequelize } from "sequelize-typescript";
 import { Presentation } from "../../models";
 import { CreatePresentationSchema } from "../../validators/createPresentation";
 // import 'express-async-errors';
@@ -31,7 +32,7 @@ export const editPresentation = async (req: express.Request, res: express.Respon
         },
       });
     }
-    await presentation.update({ name: req.body.name });
+    await presentation.update({ name: req.body.name, updatedAt: Sequelize.literal(`now()`) });
     return res.status(StatusCodes.OK).json({
       status: StatusCodes.OK,
       data: {
