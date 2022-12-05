@@ -2,7 +2,6 @@ import "dotenv/config";
 import express from "express";
 import { StatusCodes } from "http-status-codes";
 import { ISlideOption, Slide } from "../../models";
-import { addHours } from "../../utils";
 // import { CreateSlideSchema } from "../../validators";
 // import 'express-async-errors';
 export const createSlide = async (req: express.Request, res: express.Response) => {
@@ -34,8 +33,8 @@ export const createSlide = async (req: express.Request, res: express.Response) =
           fullName: req.user.fullName,
           email: req.user.email,
         },
-        createdAt: addHours(slide.createdAt, 7),
-        updatedAt: addHours(slide.updatedAt, 7),
+        createdAt: slide.createdAt,
+        updatedAt: slide.updatedAt,
       },
     });
   } catch (err) {
