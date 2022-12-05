@@ -2,7 +2,6 @@ import "dotenv/config";
 import express from "express";
 import { StatusCodes } from "http-status-codes";
 import { Presentation, Slide, User } from "../../models";
-import { addHours } from "../../utils";
 // import 'express-async-errors';
 export const listPresentationSlide = async (req, res: express.Response) => {
   try {
@@ -30,8 +29,8 @@ export const listPresentationSlide = async (req, res: express.Response) => {
           fullName: slide.createdUser.fullName,
           email: slide.createdUser.email,
         },
-        createdAt: addHours(slide.createdAt, 7),
-        updatedAt: addHours(slide.updatedAt, 7),
+        createdAt: slide.createdAt,
+        updatedAt: slide.updatedAt,
       };
     });
     return res.status(StatusCodes.OK).json({
