@@ -12,8 +12,10 @@ export const createPresentation = async (req: express.Request, res: express.Resp
       ownerId: req.user.id,
     });
     await Slide.create({
+      title: "",
       presentationId: presentation.id,
       createdBy: req.user.id,
+      options: [],
     });
     return res.status(StatusCodes.CREATED).json({
       status: StatusCodes.CREATED,

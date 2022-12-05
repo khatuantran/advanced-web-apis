@@ -9,7 +9,7 @@ export const createSlide = async (req: express.Request, res: express.Response) =
     // await CreateSlideSchema.validateAsync({ ...req.body });
     const contents = req.body.contents ? req.body.contents : null;
     const slide = await Slide.create({
-      title: req.body.title ? req.body.title : null,
+      title: req.body.title ? req.body.title : "",
       presentationId: req.params.presentationId,
       createdBy: req.user.id,
       options: contents
@@ -20,7 +20,7 @@ export const createSlide = async (req: express.Request, res: express.Response) =
               chooseNumber: 0,
             } as ISlideOption;
           })
-        : null,
+        : [],
     });
     return res.status(StatusCodes.CREATED).json({
       status: StatusCodes.CREATED,
