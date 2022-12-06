@@ -31,6 +31,14 @@ export const listPresentationSlide = async (req, res: express.Response) => {
         },
         createdAt: slide.createdAt,
         updatedAt: slide.updatedAt,
+        presentation: {
+          presentationId: presentation.id,
+          presentationName: presentation.name,
+          ownerId: presentation.ownerId,
+          ownerName: presentation.owner.fullName,
+          createdAt: presentation.createdAt,
+          updatedAt: presentation.updatedAt,
+        },
       };
     });
     return res.status(StatusCodes.OK).json({

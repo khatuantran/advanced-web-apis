@@ -1,6 +1,6 @@
 import { NextFunction, Response } from "express";
 import { StatusCodes } from "http-status-codes";
-import { Presentation } from "../models";
+import { Presentation, User } from "../models";
 
 export const presentationOfSlide = async (req, res: Response, next: NextFunction) => {
   try {
@@ -18,6 +18,12 @@ export const presentationOfSlide = async (req, res: Response, next: NextFunction
         id: req.params.presentationId,
         ownerId: req.user.id,
       },
+      include: [
+        {
+          model: User,
+          as: "owner",
+        },
+      ],
     });
     if (!presentation) {
       return res.status(StatusCodes.NOT_FOUND).json({

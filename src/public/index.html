@@ -19,11 +19,25 @@
   <script src="/socket.io/socket.io.js"></script>
 <script>
   var socket = io();
+  socket.emit("join room", "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709", "00d61169-4415-42c7-931a-d105979040bc", (res) => {
+    console.log(res);
+  })
+  
+  
+  const socketClick = () => {
+    socket.emit("choose", "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709", "00d61169-4415-42c7-931a-d105979040bc", 1, (res) => {
+      console.log(res);
+    })
+  }
+  socket.on("stat", (arg) => {
+    console.log(arg);
+  })
 </script>
   <body>
     <ul id="messages"></ul>
     <form id="form" action="">
       <input id="input" autocomplete="off" /><button>Send</button>
     </form>
+    <button onClick="socketClick()">aaaaa</button>
   </body>
 </html> 
