@@ -25,8 +25,11 @@ declare global {
 }
 const app: Express = express();
 const server = http.createServer(app);
-const io = new Server(server);
-
+const io = new Server(server, {
+  cors: {
+    origin: "*:*",
+  },
+});
 app.use(cors());
 applyPassportStrategy(passport);
 app.use(express.json());
