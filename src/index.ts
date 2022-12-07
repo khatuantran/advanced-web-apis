@@ -83,10 +83,12 @@ const connectDBAndStartServer = async () => {
             });
             if (!slide) {
               callback({
+                title: "",
                 options: [],
               });
             }
             callback({
+              title: "",
               options: slide.options,
             });
           } catch (error) {
@@ -120,10 +122,12 @@ const connectDBAndStartServer = async () => {
             });
 
             callback({
+              title: slide.title,
               options: newOption,
             });
 
             socket.to(`${presentationId} - ${slideId}`).emit("stat", {
+              title: slide.title,
               options: slide.options,
             });
           } catch (error) {
