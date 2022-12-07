@@ -88,7 +88,7 @@ const connectDBAndStartServer = async () => {
               });
             }
             callback({
-              title: "",
+              title: slide.title,
               options: slide.options,
             });
           } catch (error) {
