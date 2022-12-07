@@ -46,6 +46,7 @@ export const listPresentationSlide = async (req, res: express.Response) => {
       data: {
         presentationId: presentation.id,
         presentationName: presentation.name,
+        presentationOwnerName: presentation.owner.fullName,
         slides: slides,
       },
     });
