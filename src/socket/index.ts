@@ -1,1 +1,5 @@
-export * from "./present-soket";
+import { Server, Socket } from "socket.io";
+import { presentationHandlers } from "./presentation-handler";
+export const onConnection = (io: Server, socket: Socket) => {
+  presentationHandlers(io, socket);
+};

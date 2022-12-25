@@ -6,8 +6,8 @@ import passport from "passport";
 import path from "path";
 import { Server } from "socket.io";
 import { applyPassportStrategy } from "./middlewares";
-import { Slide } from "./models";
 import { authRouter, groupRouter, presentationRouter, userRouter } from "./routers";
+import { onConnection } from "./socket";
 import { configSequelize } from "./utils";
 import { configAssociation } from "./utils/config-association";
 declare global {
@@ -62,6 +62,8 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({ error: err.message });
 });
 
+io.on("connection", (socket) => onConnection(io, socket));
+
 const connectDBAndStartServer = async () => {
   const port = process.env.PORT || 3000;
   try {
@@ -70,71 +72,6 @@ const connectDBAndStartServer = async () => {
     await sequelize.authenticate();
     server.listen(port, () => {
       console.log(`Listening on port ${port}`);
-
-      io.on("connection", (socket) => {
-        socket.on("join room", async (presentationId, slideId, callback) => {
-          try {
-            console.log(`Client ${socket.id} join room ${presentationId} - ${slideId}`);
-            await socket.join(`${presentationId} - ${slideId}`);
-            const slide = await Slide.findOne({
-              where: {
-                id: slideId,
-              },
-            });
-            if (!slide) {
-              callback({
-                title: "",
-                options: [],
-              });
-            }
-            callback({
-              title: slide.title,
-              options: slide.options,
-            });
-          } catch (error) {
-            console.log(error);
-          }
-        });
-
-        socket.on("choose", async (presentationId, slideId, index, callback) => {
-          try {
-            console.log(`Client ${socket.id} choose ${index} for slide ${slideId}`);
-            const slide = await Slide.findOne({
-              where: {
-                id: slideId,
-              },
-            });
-
-            const newOption = slide.options.map((option) => {
-              return option.index == index
-                ? {
-                    index: option.index,
-                    content: option.content,
-                    chooseNumber: option.chooseNumber + 1,
-                  }
-                : option;
-            });
-
-            console.log(newOption);
-
-            await slide.update({
-              options: newOption,
-            });
-
-            callback({
-              title: slide.title,
-              options: newOption,
-            });
-
-            socket.to(`${presentationId} - ${slideId}`).emit("stat", {
-              title: slide.title,
-              options: slide.options,
-            });
-          } catch (error) {
-            console.log(error);
-          }
-        });
-      });
     });
   } catch (err) {
     console.log(err);
