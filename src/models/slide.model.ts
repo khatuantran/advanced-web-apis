@@ -7,6 +7,22 @@ export type ISlideOption = {
   content: string;
   chooseNumber: number;
 };
+
+export enum SlideType {
+  MultipleChoice = "multiple_choice",
+  Paragraph = "paragraph",
+  Heading = "heading",
+}
+
+export type ISlideParagraph = {
+  heading: string;
+  content: string;
+};
+
+export type ISlideHeading = {
+  heading: string;
+  subHeading: string;
+};
 @Table({
   tableName: "slide",
   timestamps: false,
@@ -20,10 +36,10 @@ export class Slide extends Model<Slide> {
   public title: string;
 
   @Column(DataType.JSONB)
-  public options: ISlideOption[];
+  public options: ISlideOption[] | string;
 
   @Column
-  public type: string;
+  public type: SlideType;
 
   @Column
   @ForeignKey(() => Presentation)

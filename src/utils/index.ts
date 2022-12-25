@@ -3,4 +3,5 @@ export * from "./add-hours";
 export * from "./firebase";
 export * from "./generate-token";
 export * from "./join-group-email";
+export * from "./reset-password-email";
 export * from "./sequelize";

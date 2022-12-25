@@ -1,7 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import { StatusCodes } from "http-status-codes";
-import { Presentation, Slide } from "../../models";
+import { Presentation, Slide, SlideType } from "../../models";
 import { CreatePresentationSchema } from "../../validators/createPresentation";
 // import 'express-async-errors';
 export const createPresentation = async (req: express.Request, res: express.Response) => {
@@ -16,6 +16,7 @@ export const createPresentation = async (req: express.Request, res: express.Resp
       presentationId: presentation.id,
       createdBy: req.user.id,
       options: [],
+      type: SlideType.MultipleChoice,
     });
     return res.status(StatusCodes.CREATED).json({
       status: StatusCodes.CREATED,

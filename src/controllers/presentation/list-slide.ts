@@ -24,11 +24,14 @@ export const listPresentationSlide = async (req, res: express.Response) => {
         id: slide.id,
         title: slide.title,
         options: slide.options,
-        createdUser: {
-          id: slide.createdUser.id,
-          fullName: slide.createdUser.fullName,
-          email: slide.createdUser.email,
-        },
+        type: slide.type ? slide.type : null,
+        createdUser: slide.createdUser
+          ? {
+              id: slide.createdUser.id,
+              fullName: slide.createdUser.fullName,
+              email: slide.createdUser.email,
+            }
+          : null,
         createdAt: slide.createdAt,
         updatedAt: slide.updatedAt,
         presentation: {
