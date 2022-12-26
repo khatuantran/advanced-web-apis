@@ -5,7 +5,7 @@ import http from "http";
 import passport from "passport";
 import path from "path";
 import { Server } from "socket.io";
-import { applyPassportStrategy } from "./middlewares";
+import { applyPassportStrategy, verifyUserForSocket } from "./middlewares";
 import { authRouter, groupRouter, presentationRouter, userRouter } from "./routers";
 import { onConnection } from "./socket";
 import { configSequelize } from "./utils";
@@ -62,8 +62,7 @@ app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   res.status(500).json({ error: err.message });
 });
 
-io.on("connection", (socket) => onConnection(io, socket));
-
+io.use(verifyUserForSocket);
 const connectDBAndStartServer = async () => {
   const port = process.env.PORT || 3000;
   try {
@@ -73,6 +72,7 @@ const connectDBAndStartServer = async () => {
     server.listen(port, () => {
       console.log(`Listening on port ${port}`);
     });
+    io.on("connection", (socket) => onConnection(io, socket));
   } catch (err) {
     console.log(err);
   }

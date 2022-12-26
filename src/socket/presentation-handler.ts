@@ -1,13 +1,25 @@
 import { Server, Socket } from "socket.io";
-import { ISlideOption, Slide, SlideType } from "../models";
+import { GroupRole, ISlideOption, Slide, SlideType, UserGroup } from "../models";
 
 export type ISlide = {
   title: string;
   options: ISlideOption[] | string;
   type: SlideType;
 };
+
+type GroupPresentationData = {
+  groupId: string;
+  presentationId: string;
+  slideId: string;
+};
 export const presentationHandlers = (io: Server, socket: Socket) => {
-  const joinPresentation = async (presentationId: string, slideId: string, callback: (response: ISlide) => void) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const socketNotType = socket as any;
+  const joinPresentation = async (
+    presentationId: string,
+    slideId: string,
+    sendResponseToClient: (response: ISlide) => void,
+  ) => {
     try {
       console.log(`Client ${socket.id} join room ${presentationId} - ${slideId}`);
       await socket.join(`${presentationId} - ${slideId}`);
@@ -17,13 +29,13 @@ export const presentationHandlers = (io: Server, socket: Socket) => {
         },
       });
       if (!slide) {
-        callback({
+        sendResponseToClient({
           title: "",
           options: [],
           type: SlideType.MultipleChoice,
         });
       }
-      callback({
+      sendResponseToClient({
         title: slide.title,
         options: slide.options,
         type: slide.type,
@@ -37,7 +49,7 @@ export const presentationHandlers = (io: Server, socket: Socket) => {
     presentationId: string,
     slideId: string,
     index: number,
-    callback: (response: ISlide) => void,
+    sendResponseToClient: (response: ISlide) => void,
   ) => {
     try {
       console.log(`Client ${socket.id} choose ${index} for slide ${slideId}`);
@@ -46,7 +58,10 @@ export const presentationHandlers = (io: Server, socket: Socket) => {
           id: slideId,
         },
       });
-
+      if (!slide || slide.type != SlideType.MultipleChoice) {
+        console.error("slide not found");
+        return;
+      }
       const newOption = (slide.options as ISlideOption[]).map((option) => {
         return option.index == index
           ? {
@@ -63,7 +78,7 @@ export const presentationHandlers = (io: Server, socket: Socket) => {
         options: newOption,
       });
 
-      callback({
+      sendResponseToClient({
         title: slide.title,
         options: newOption,
         type: slide.type,
@@ -78,6 +93,47 @@ export const presentationHandlers = (io: Server, socket: Socket) => {
       console.log(error);
     }
   };
+
+  const presentationToGroup = async (data: GroupPresentationData, sendResponseToClient: (response) => void) => {
+    try {
+      const userId = socketNotType.userId;
+      if (!userId) {
+        sendResponseToClient({
+          error: {
+            code: "user_not_found",
+            message: "User not found",
+          },
+        });
+      }
+      const userGroup = await UserGroup.findOne({
+        where: {
+          userId: userId,
+          groupId: data.groupId,
+        },
+      });
+      if (!userGroup) {
+        sendResponseToClient({
+          error: {
+            code: "group_not_found",
+            message: "Group not found",
+          },
+        });
+      }
+
+      if (userGroup.role == GroupRole.MEMBER) {
+        sendResponseToClient({
+          error: {
+            code: "group_not_found",
+            message: "Group not found",
+          },
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      sendResponseToClient({ error });
+    }
+  };
   socket.on("join room", joinPresentation);
   socket.on("choose", chooseOptionForSlide);
+  socket.on("group:present", presentationToGroup);
 };
