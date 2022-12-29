@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import { ISlideOption, Slide, SlideType } from "../../models";
 import { IChooseOption, IError, ISlide } from "./type";
 
@@ -15,7 +16,9 @@ export const chooseOptionForSlide = async (
       await Slide.findAll({
         where: {
           presentationId: data.presentationId,
-          createdBy: socket.userId,
+          createdBy: {
+            [Op.ne]: null,
+          },
         },
         order: [["createdAt", "ASC"]],
       })
@@ -24,18 +27,16 @@ export const chooseOptionForSlide = async (
         slideIndex = index;
       }
       return {
+        id: slide.id,
         title: slide.title,
         options: slide.options,
         type: slide.type,
-        isSelected: slide.id === data.slideId,
+        isSelected: slide.isSelected,
         presentationId: slide.presentationId,
       } as ISlide;
     });
 
-    const slide = slides.find((s) => s.id === data.slideId);
-
-    if (!slide || slide.type != SlideType.MultipleChoice) {
-      console.error("slide not found");
+    if (slideIndex === -1 || slides[slideIndex].type !== SlideType.MultipleChoice) {
       return sendResponseToClient({
         error: {
           code: "slide_not_found",
@@ -43,6 +44,7 @@ export const chooseOptionForSlide = async (
         },
       });
     }
+    const slide = slides[slideIndex];
 
     const newOption = (slide.options as ISlideOption[]).map((option) => {
       return option.index == data.index
@@ -53,7 +55,6 @@ export const chooseOptionForSlide = async (
           }
         : option;
     });
-
     await Slide.update(
       {
         options: newOption,
@@ -63,24 +64,9 @@ export const chooseOptionForSlide = async (
       },
     );
 
-    if (slideIndex === -1) {
-      console.log("slide index = -1");
-      return sendResponseToClient({
-        error: {
-          code: "slide_not_found",
-          message: "Slide not found",
-        },
-      });
-    }
-
     slides[slideIndex].options = newOption;
     sendResponseToClient(slides);
-
-    // socket.to(`${presentationId} - ${slideId}`).emit("stat", {
-    //   title: slide.title,
-    //   options: slide.options,
-    //   type: slide.type,
-    // });
+    socket.to(`${data.presentationId}`).emit("personal:choose-option", slides);
   } catch (error) {
     return sendResponseToClient({
       error: {

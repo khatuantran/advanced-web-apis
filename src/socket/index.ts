@@ -1,5 +1,5 @@
 import { Server, Socket } from "socket.io";
-import { presentationHandlers } from "./presentation";
+import { personalPresentationHandlers } from "./presentation";
 export const onConnection = (io: Server, socket: Socket) => {
-  presentationHandlers(io, socket);
+  personalPresentationHandlers(io, socket);
 };

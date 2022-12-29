@@ -26,7 +26,7 @@ export const sendResetPasswordLink = async (req: express.Request, res: express.R
       activateString: activateString,
     });
 
-    await sendResetPasswordEmail(user.email, `https://midterm-ptudwnc.vercel.app/reset-password/${activateString}`);
+    await sendResetPasswordEmail(user.email, `https://final-term.vercel.app/reset-password/${activateString}`);
     return res.status(StatusCodes.OK).json({
       status: StatusCodes.OK,
       data: {

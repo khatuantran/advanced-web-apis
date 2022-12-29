@@ -1,13 +1,14 @@
 import { Presentation, Slide } from "../../models";
 import { IError, ISlide, PersonalPresentationData } from "./type";
 
-export const transferSlide = async (
+export const endPresentation = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   socket: any,
   data: PersonalPresentationData,
   sendResponseToClient: (response: ISlide[] | IError) => void,
 ) => {
   try {
+    console.log("End present socket");
     if (!socket.userId) {
       return sendResponseToClient({
         error: {
@@ -16,36 +17,16 @@ export const transferSlide = async (
         },
       });
     }
-    let isExist = false;
-    const slides = (
-      await Slide.findAll({
-        where: {
-          presentationId: data.presentationId,
-          createdBy: socket.userId,
-        },
-        include: [
-          {
-            model: Presentation,
-            as: "presentation",
-          },
-        ],
-        order: [["createdAt", "ASC"]],
-      })
-    ).map((slide) => {
-      if (slide.id === data.slideId) {
-        isExist = true;
-      }
-      return {
-        id: slide.id,
-        title: slide.title,
-        options: slide.options,
-        type: slide.type,
-        isSelected: slide.id === data.slideId,
-        presentationId: slide.presentationId,
-      } as ISlide;
+
+    const presentation = await Presentation.findOne({
+      where: {
+        id: data.presentationId,
+        isPresent: true,
+        ownerId: socket.userId,
+      },
     });
 
-    if (!isExist) {
+    if (!presentation) {
       return sendResponseToClient({
         error: {
           code: "slide_not_found",
@@ -64,19 +45,18 @@ export const transferSlide = async (
         },
       },
     );
-    await Slide.update(
+    await Presentation.update(
       {
-        isSelected: true,
+        isPresent: false,
       },
       {
         where: {
-          id: data.slideId,
+          id: data.presentationId,
         },
       },
     );
-    console.log(`Client ${socket.id} transfer slide ${data.slideId}`);
-    await socket.to(`${data.presentationId}`).emit("personal:transfer-slide", slides);
-    sendResponseToClient(slides);
+    console.log(`Client ${socket.id} end present ${data.presentationId}`);
+    await socket.to(`${data.presentationId}`).emit("personal:end-present");
   } catch (error) {
     return sendResponseToClient({
       error: {

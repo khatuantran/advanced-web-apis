@@ -1,3 +1,4 @@
+import { Op } from "sequelize";
 import { Presentation, Slide } from "../../models";
 import { IError, ISlide, PersonalPresentationData } from "./type";
 
@@ -8,7 +9,8 @@ export const joinPresentation = async (
   sendResponseToClient: (response: ISlide[] | IError) => void,
 ) => {
   try {
-    if (!data.userId) {
+    console.log("Join present socket");
+    if (!data.presentationId) {
       return sendResponseToClient({
         error: {
           code: "room_not_found",
@@ -17,31 +19,20 @@ export const joinPresentation = async (
       });
     }
 
-    // const presentation = await Presentation.findOne({
-    //   where: {
-    //     ownerId: data.userId,
-    //     isPresent: true,
-    //   },
-    //   include: [
-    //     {
-    //       model: Slide,
-    //       as: "slides",
-    //     },
-    //   ],
-    // });
     const slides = (
       await Slide.findAll({
         where: {
-          createdBy: data.userId,
+          presentationId: data.presentationId,
+          createdBy: {
+            [Op.ne]: null,
+          },
         },
         include: [
           {
             model: Presentation,
             as: "presentation",
             where: {
-              require: true,
               isPresent: true,
-              ownerId: data.userId,
             },
           },
         ],
@@ -66,7 +57,7 @@ export const joinPresentation = async (
         },
       });
     }
-    await socket.join(`${data.userId}-${data.presentationId}`);
+    await socket.join(`${data.presentationId}`);
     sendResponseToClient(slides);
   } catch (error) {
     return sendResponseToClient({

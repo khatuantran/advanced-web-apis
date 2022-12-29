@@ -8,6 +8,7 @@ export const startPresentation = async (
   sendResponseToClient: (response: ISlide[] | IError) => void,
 ) => {
   try {
+    console.log("Start present socket");
     if (!socket.userId) {
       return sendResponseToClient({
         error: {
@@ -54,6 +55,7 @@ export const startPresentation = async (
       {
         where: {
           presentationId: data.presentationId,
+          isSelected: true,
         },
       },
     );
@@ -78,7 +80,7 @@ export const startPresentation = async (
       },
     );
     console.log(`Client ${socket.id} start present ${data.presentationId}`);
-    await socket.join(`${socket.userId}-${data.presentationId}`);
+    await socket.join(`${data.presentationId}`);
     sendResponseToClient(slides);
   } catch (error) {
     return sendResponseToClient({
