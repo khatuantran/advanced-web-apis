@@ -1,16 +1,33 @@
 import { Op } from "sequelize";
 import { ISlideOption, Slide, SlideType } from "../../models";
-import { IChooseOption, IError, ISlide } from "./type";
+import { isHavePermission } from "../../utils";
+import { IError, IGroupChooseOption, ISlide } from "../type";
 
-export const chooseOptionForSlide = async (
+export const chooseOptionForSlideGroup = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   socket: any,
-  data: IChooseOption,
+  data: IGroupChooseOption,
   sendResponseToClient: (response: ISlide[] | IError) => void,
 ) => {
   try {
     console.log(`Client ${socket.id} choose ${data.index} for slide ${data.slideId}`);
+    if (!socket.userId) {
+      return sendResponseToClient({
+        error: {
+          code: "user_not_found",
+          message: "User not found",
+        },
+      });
+    }
 
+    if (!(await isHavePermission(socket.userId, data.groupId))) {
+      return sendResponseToClient({
+        error: {
+          code: "permission_denied",
+          message: "Permission denied",
+        },
+      });
+    }
     let slideIndex = -1;
     const slides = (
       await Slide.findAll({
@@ -66,7 +83,7 @@ export const chooseOptionForSlide = async (
 
     slides[slideIndex].options = newOption;
     sendResponseToClient(slides);
-    socket.to(`${data.presentationId}`).emit("personal:choose-option", slides);
+    socket.to(`${data.groupId}`).emit("group:choose-option", slides);
   } catch (error) {
     return sendResponseToClient({
       error: {

@@ -1,5 +1,5 @@
 import { Presentation, Slide } from "../../models";
-import { IError, ISlide, PersonalPresentationData } from "./type";
+import { IError, ISlide, PersonalPresentationData } from "../type";
 
 export const endPresentation = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,14 +1,13 @@
 import { Presentation, Slide } from "../../models";
-import { IError, ISlide, PersonalPresentationData } from "./type";
+import { IError, ISlide, PersonalPresentationData } from "../type";
 
-export const startPresentation = async (
+export const transferSlide = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   socket: any,
   data: PersonalPresentationData,
   sendResponseToClient: (response: ISlide[] | IError) => void,
 ) => {
   try {
-    console.log("Start present socket");
     if (!socket.userId) {
       return sendResponseToClient({
         error: {
@@ -24,10 +23,16 @@ export const startPresentation = async (
           presentationId: data.presentationId,
           createdBy: socket.userId,
         },
+        include: [
+          {
+            model: Presentation,
+            as: "presentation",
+          },
+        ],
         order: [["createdAt", "ASC"]],
       })
     ).map((slide) => {
-      if (slide.id == data.slideId) {
+      if (slide.id === data.slideId) {
         isExist = true;
       }
       return {
@@ -69,18 +74,8 @@ export const startPresentation = async (
         },
       },
     );
-    await Presentation.update(
-      {
-        isPresent: true,
-      },
-      {
-        where: {
-          id: data.presentationId,
-        },
-      },
-    );
-    console.log(`Client ${socket.id} start present ${data.presentationId}`);
-    await socket.join(`${data.presentationId}`);
+    console.log(`Client ${socket.id} transfer slide ${data.slideId}`);
+    await socket.to(`${data.presentationId}`).emit("personal:transfer-slide", slides);
     sendResponseToClient(slides);
   } catch (error) {
     return sendResponseToClient({

@@ -1,5 +1,7 @@
 import { Server, Socket } from "socket.io";
-import { personalPresentationHandlers } from "./presentation";
+import { groupPresentationHandlers } from "./group-presentation";
+import { personalPresentationHandlers } from "./personal-presentation";
 export const onConnection = (io: Server, socket: Socket) => {
   personalPresentationHandlers(io, socket);
+  groupPresentationHandlers(io, socket);
 };

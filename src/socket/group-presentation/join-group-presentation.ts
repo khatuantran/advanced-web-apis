@@ -1,20 +1,30 @@
 import { Op } from "sequelize";
 import { Presentation, Slide } from "../../models";
-import { IError, ISlide, PersonalPresentationData } from "./type";
+import { isHavePermission } from "../../utils";
+import { GroupPresentationData, IError, ISlide } from "../type";
 
-export const joinPresentation = async (
+export const joinGroupPresentation = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   socket: any,
-  data: PersonalPresentationData,
+  data: GroupPresentationData,
   sendResponseToClient: (response: ISlide[] | IError) => void,
 ) => {
   try {
-    console.log("Join present socket");
+    console.log("Join group present socket");
     if (!data.presentationId) {
       return sendResponseToClient({
         error: {
           code: "room_not_found",
           message: "Room not found",
+        },
+      });
+    }
+
+    if (await isHavePermission(socket.userId, data.groupId)) {
+      return sendResponseToClient({
+        error: {
+          code: "permission_denied",
+          message: "Permission denied",
         },
       });
     }
@@ -57,7 +67,7 @@ export const joinPresentation = async (
         },
       });
     }
-    await socket.join(`${data.presentationId}`);
+    await socket.join(`${data.groupId}`);
     sendResponseToClient(slides);
   } catch (error) {
     return sendResponseToClient({

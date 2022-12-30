@@ -1,4 +1,4 @@
-import { ISlideOption, SlideType } from "../../models";
+import { ISlideOption, SlideType } from "../models";
 
 export type ISlide = {
   id: string;
@@ -16,10 +16,10 @@ export type IError = {
   };
 };
 export type GroupPresentationData = {
-  groupId: string;
-  presentationId: string;
-  slideId: string;
-  userId: string;
+  groupId?: string;
+  presentationId?: string;
+  slideId?: string;
+  userId?: string;
 };
 
 export type PersonalPresentationData = {
@@ -32,4 +32,11 @@ export type IChooseOption = {
   presentationId?: string;
   slideId?: string;
   index: number;
+};
+
+export type IGroupChooseOption = {
+  presentationId?: string;
+  slideId?: string;
+  index: number;
+  groupId: string;
 };

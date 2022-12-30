@@ -96,3 +96,5 @@ CREATE TABLE "slide"
     PRIMARY KEY ("id"),
     FOREIGN KEY ("presentationId") REFERENCES "presentation" ("id") ON UPDATE restrict ON DELETE cascade
 );
+
+ALTER TABLE "group" ADD COLUMN "presentationId" UUID NULL;

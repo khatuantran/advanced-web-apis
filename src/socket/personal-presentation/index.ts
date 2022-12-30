@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Server, Socket } from "socket.io";
 import { Presentation } from "../../models";
+import { IChooseOption, PersonalPresentationData } from "../type";
 import { chooseOptionForSlide } from "./choose-option";
 import { endPresentation } from "./end-presentation";
 import { joinPresentation } from "./join-presentation";
 import { startPresentation } from "./start-presentation";
 import { transferSlide } from "./transfer-slide";
-import { IChooseOption, PersonalPresentationData } from "./type";
 
 export const personalPresentationHandlers = (io: Server, socket: Socket) => {
   const socketNotType = socket as any;
