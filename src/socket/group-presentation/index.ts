@@ -6,8 +6,12 @@ import { endGroupPresentation } from "./end-group-presentation";
 import { joinGroupPresentation } from "./join-group-presentation";
 import { startGroupPresentation } from "./start-group-presentation";
 import { transferSlideGroup } from "./transfer-slide-group";
+import { waitingGroupPresentation } from "./waiting-present";
 
 export const groupPresentationHandlers = (io: Server, socket: Socket) => {
+  socket.on("group:waiting", async (callBack: any) => {
+    await waitingGroupPresentation(socket, callBack);
+  });
   socket.on("group:start-present", async (data: GroupPresentationData, callBack: any) => {
     await startGroupPresentation(socket, data, callBack);
   });

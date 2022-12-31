@@ -108,7 +108,11 @@ export const startGroupPresentation = async (
     );
     console.log(`Client ${socket.id} start present ${data.presentationId}`);
     await socket.join(`${data.groupId}`);
-    socket.to(`${data.groupId}`).emit("group:start-present", { presenationId: data.presentationId });
+    socket.to(`${data.groupId}`).emit("group:start-present", {
+      groupId: data.groupId,
+      groupName: group.name,
+      presentationId: data.presentationId,
+    });
     sendResponseToClient(slides);
   } catch (error) {
     return sendResponseToClient({

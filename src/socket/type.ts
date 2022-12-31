@@ -20,12 +20,14 @@ export type GroupPresentationData = {
   presentationId?: string;
   slideId?: string;
   userId?: string;
+  message?: string;
 };
 
 export type PersonalPresentationData = {
   presentationId?: string;
   slideId?: string;
   userId?: string;
+  message?: string;
 };
 
 export type IChooseOption = {
@@ -39,4 +41,15 @@ export type IGroupChooseOption = {
   slideId?: string;
   index: number;
   groupId: string;
+};
+
+export type IChat = {
+  content: string;
+  createdAt: Date;
+};
+
+export type IGroupPresent = {
+  groupId: string;
+  groupName: string;
+  presentationId: string;
 };

@@ -98,3 +98,17 @@ CREATE TABLE "slide"
 );
 
 ALTER TABLE "group" ADD COLUMN "presentationId" UUID NULL;
+
+CREATE TABLE "chat"
+(
+    "id" UUID NOT NULL DEFAULT gen_random_uuid(),
+    "presentationId" uuid,
+    "content"    jsonb,
+    "type" text,
+    "createdAt" timestamptz NOT NULL DEFAULT now(),
+    "updatedAt" timestamptz NOT NULL DEFAULT now(),
+    "createdBy" uuid,
+    "updatedBy" uuid,
+    PRIMARY KEY ("id"),
+    FOREIGN KEY ("presentationId") REFERENCES "presentation" ("id") ON UPDATE restrict ON DELETE cascade
+);
