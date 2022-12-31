@@ -9,6 +9,7 @@ export const endGroupPresentation = async (
   sendResponseToClient: (response: ISlide[] | IError) => void,
 ) => {
   try {
+    console.log("Group");
     console.log("End present socket");
     if (!socket.userId) {
       return sendResponseToClient({
@@ -71,7 +72,7 @@ export const endGroupPresentation = async (
       },
     );
     console.log(`Client ${socket.id} end present ${data.presentationId}`);
-    await socket.to(`${data.presentationId}`).emit("personal:end-present");
+    await socket.to(`${data.presentationId}`).emit("personal:end-present", { message: "end present" });
   } catch (error) {
     return sendResponseToClient({
       error: {

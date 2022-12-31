@@ -38,7 +38,10 @@
   const socketClick = () => {
 
     // topic choose - presentationId - slideId - order
-    socket.emit("personal:end-present", {presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709", slideId: "db0badb5-fee4-432e-9a77-a361c542da19"} , () => {
+    socket.emit("personal:end-present", {
+      presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709", 
+      slideId: "db0badb5-fee4-432e-9a77-a361c542da19"
+    } , () => {
       console.log("end present");
     })
   }

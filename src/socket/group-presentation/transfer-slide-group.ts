@@ -9,6 +9,7 @@ export const transferSlideGroup = async (
   sendResponseToClient: (response: ISlide[] | IError) => void,
 ) => {
   try {
+    console.log("Group");
     if (!socket.userId) {
       return sendResponseToClient({
         error: {

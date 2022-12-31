@@ -10,6 +10,8 @@ export const joinGroupPresentation = async (
   sendResponseToClient: (response: ISlide[] | IError) => void,
 ) => {
   try {
+    console.log("Group");
+
     console.log("Join group present socket");
     if (!data.presentationId) {
       return sendResponseToClient({

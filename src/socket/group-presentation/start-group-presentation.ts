@@ -9,6 +9,7 @@ export const startGroupPresentation = async (
   sendResponseToClient: (response: ISlide[] | IError) => void,
 ) => {
   try {
+    console.log("Group");
     console.log("Start group present socket");
     if (!socket.userId) {
       return sendResponseToClient({

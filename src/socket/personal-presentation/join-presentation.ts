@@ -58,6 +58,7 @@ export const joinPresentation = async (
       });
     }
     await socket.join(`${data.presentationId}`);
+    console.log(`Client ${socket.id} joint presentation ${data.presentationId}`);
     sendResponseToClient(slides);
   } catch (error) {
     return sendResponseToClient({

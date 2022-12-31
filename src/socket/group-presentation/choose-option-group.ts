@@ -10,6 +10,7 @@ export const chooseOptionForSlideGroup = async (
   sendResponseToClient: (response: ISlide[] | IError) => void,
 ) => {
   try {
+    console.log("Group");
     console.log(`Client ${socket.id} choose ${data.index} for slide ${data.slideId}`);
     if (!socket.userId) {
       return sendResponseToClient({

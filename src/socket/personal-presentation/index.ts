@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Server, Socket } from "socket.io";
-import { Presentation } from "../../models";
+import { Group, Presentation } from "../../models";
 import { IChooseOption, PersonalPresentationData } from "../type";
 import { chooseOptionForSlide } from "./choose-option";
 import { endPresentation } from "./end-presentation";
@@ -38,6 +38,19 @@ export const personalPresentationHandlers = (io: Server, socket: Socket) => {
         await presentation.update({
           isPresent: false,
         });
+
+        const group = await Group.findOne({
+          where: {
+            presentationId: presentation.id,
+          },
+        });
+
+        if (group) {
+          console.log(`Client ${socket.id} disconnected, update group present ${presentation.id}`);
+          await group.update({
+            presentationId: null,
+          });
+        }
         socket.to(`${presentation.id}`).emit("personal:end-present");
       }
     }
