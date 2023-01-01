@@ -17,21 +17,25 @@ export const chatPresentation = async (
     });
 
     if (!presentation) {
-      return sendResponseToClient({
-        error: {
-          code: "presentation_not_found",
-          message: "Presentation not found",
-        },
-      });
+      return typeof sendResponseToClient === "function"
+        ? sendResponseToClient({
+            error: {
+              code: "presentation_not_found",
+              message: "Presentation not found",
+            },
+          })
+        : null;
     }
 
     if (!data?.message) {
-      return sendResponseToClient({
-        error: {
-          code: "message_required",
-          message: "Message is required",
-        },
-      });
+      return typeof sendResponseToClient === "function"
+        ? sendResponseToClient({
+            error: {
+              code: "message_required",
+              message: "Message is required",
+            },
+          })
+        : null;
     }
 
     await Chat.create({

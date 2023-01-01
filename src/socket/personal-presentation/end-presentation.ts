@@ -38,7 +38,7 @@ export const endPresentation = async (
           })
         : null;
     }
-    // await Slide.update(
+    await socket.to(`${data.presentationId}`).emit("personal:end-present");
   } catch (error) {
     console.log(error);
     return typeof sendResponseToClient === "function"
