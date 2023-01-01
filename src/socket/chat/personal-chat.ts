@@ -58,7 +58,7 @@ export const chatPersonalPresent = async (
       } as IChat;
     });
 
-    console.log(`Client ${socket.id} start present ${data.presentationId}`);
+    console.log(`Client ${socket.id} push a chat to ${data.presentationId}`);
     await socket.to(`${data.presentationId}`).emit("personal:chat", chatData);
     sendResponseToClient(chatData);
   } catch (error) {
