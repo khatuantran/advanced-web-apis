@@ -69,16 +69,6 @@ export const startPresentation = async (
         },
       },
     );
-    // await Presentation.update(
-    //   {
-    //     isPresent: true,
-    //   },
-    //   {
-    //     where: {
-    //       id: data.presentationId,
-    //     },
-    //   },
-    // );
     console.log(typeof sendResponseToClient);
     console.log(`Client ${socket.id} start present ${data.presentationId}`);
     await socket.join(`${data.presentationId}`);

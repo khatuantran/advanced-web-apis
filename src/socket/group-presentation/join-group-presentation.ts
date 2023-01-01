@@ -22,7 +22,7 @@ export const joinGroupPresentation = async (
       });
     }
 
-    if (await isHavePermission(socket.userId, data.groupId)) {
+    if (!(await isHavePermission(socket.userId, data.groupId))) {
       return sendResponseToClient({
         error: {
           code: "permission_denied",

@@ -37,12 +37,14 @@ export const chooseOptionForSlide = async (
     });
 
     if (slideIndex === -1 || slides[slideIndex].type !== SlideType.MultipleChoice) {
-      return sendResponseToClient({
-        error: {
-          code: "slide_not_found",
-          message: "Slide not found",
-        },
-      });
+      return typeof sendResponseToClient === "function"
+        ? sendResponseToClient({
+            error: {
+              code: "slide_not_found",
+              message: "Slide not found",
+            },
+          })
+        : null;
     }
     const slide = slides[slideIndex];
 

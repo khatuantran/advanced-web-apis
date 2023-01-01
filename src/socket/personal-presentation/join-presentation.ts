@@ -11,12 +11,14 @@ export const joinPresentation = async (
   try {
     console.log("Join present socket");
     if (!data.presentationId) {
-      return sendResponseToClient({
-        error: {
-          code: "room_not_found",
-          message: "Room not found",
-        },
-      });
+      return typeof sendResponseToClient === "function"
+        ? sendResponseToClient({
+            error: {
+              code: "room_not_found",
+              message: "Room not found",
+            },
+          })
+        : null;
     }
 
     const slides = (
@@ -47,12 +49,14 @@ export const joinPresentation = async (
     });
 
     if (!slides || slides.length === 0) {
-      return sendResponseToClient({
-        error: {
-          code: "presentation_not_found",
-          message: "Presentation not found",
-        },
-      });
+      return typeof sendResponseToClient === "function"
+        ? sendResponseToClient({
+            error: {
+              code: "presentation_not_found",
+              message: "Presentation not found",
+            },
+          })
+        : null;
     }
     await socket.join(`${data.presentationId}`);
     console.log(`Client ${socket.id} joint presentation ${data.presentationId}`);

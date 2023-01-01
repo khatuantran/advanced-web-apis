@@ -10,12 +10,14 @@ export const endPresentation = async (
   try {
     console.log("End present socket");
     if (!socket.userId) {
-      return sendResponseToClient({
-        error: {
-          code: "user_not_found",
-          message: "User not found",
-        },
-      });
+      return typeof sendResponseToClient === "function"
+        ? sendResponseToClient({
+            error: {
+              code: "user_not_found",
+              message: "User not found",
+            },
+          })
+        : null;
     }
 
     const presentation = await Presentation.findOne({
@@ -27,36 +29,16 @@ export const endPresentation = async (
     });
 
     if (!presentation) {
-      return sendResponseToClient({
-        error: {
-          code: "presentation_not_found",
-          message: "Presentation not found",
-        },
-      });
+      return typeof sendResponseToClient === "function"
+        ? sendResponseToClient({
+            error: {
+              code: "presentation_not_found",
+              message: "Presentation not found",
+            },
+          })
+        : null;
     }
     // await Slide.update(
-    //   {
-    //     isSelected: false,
-    //   },
-    //   {
-    //     where: {
-    //       presentationId: data.presentationId,
-    //       isSelected: true,
-    //     },
-    //   },
-    // );
-    // await Presentation.update(
-    //   {
-    //     isPresent: false,
-    //   },
-    //   {
-    //     where: {
-    //       id: data.presentationId,
-    //     },
-    //   },
-    // );
-    console.log(`Client ${socket.id} end present ${data.presentationId}`);
-    await socket.to(`${data.presentationId}`).emit("personal:end-present");
   } catch (error) {
     console.log(error);
     return typeof sendResponseToClient === "function"

@@ -48,14 +48,14 @@ export const sendInvitationEmail = async (req: express.Request, res: express.Res
       inviteObjects = userEmails.map((userEmail) => {
         return {
           email: userEmail,
-          link: `https://midterm-ptudwnc.vercel.app/join-group-by-link/${userGroup.group.invitationLink}`,
+          link: `https://final-term.vercel.app/join-group-by-link/${userGroup.group.invitationLink}`,
         } as IInvitationJoinGroup;
       });
     } else {
       inviteObjects = userEmails.map((userEmail) => {
         return {
           email: userEmail,
-          link: `https://midterm-ptudwnc.vercel.app/join-group-by-link/${userGroup.group.invitationLink}`,
+          link: `https://final-term.vercel.app/join-group-by-link/${userGroup.group.invitationLink}`,
         } as IInvitationJoinGroup;
       });
     }

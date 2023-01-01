@@ -46,12 +46,14 @@ export const transferSlide = async (
     });
 
     if (!isExist) {
-      return sendResponseToClient({
-        error: {
-          code: "slide_not_found",
-          message: "Slide not found",
-        },
-      });
+      return typeof sendResponseToClient === "function"
+        ? sendResponseToClient({
+            error: {
+              code: "slide_not_found",
+              message: "Slide not found",
+            },
+          })
+        : null;
     }
     await Slide.update(
       {
