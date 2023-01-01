@@ -64,7 +64,7 @@ export const getGroupChat = async (
     });
 
     console.log(`Client ${socket.id} push a chat to ${data.presentationId}`);
-    await socket.to(`${data.groupId}`).emit("group:get-chat", chatData);
+    // await socket.to(`${data.groupId}`).emit("group:get-chat", chatData);
     sendResponseToClient(chatData);
   } catch (error) {
     console.log(error);

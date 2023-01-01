@@ -42,7 +42,7 @@ export const getPersonalChat = async (
     });
 
     console.log(`Client ${socket.id} get all chat of present ${data.presentationId}`);
-    await socket.to(`${data.presentationId}`).emit("personal:get-chat", chatData);
+    // await socket.to(`${data.presentationId}`).emit("personal:get-chat", chatData);
     sendResponseToClient(chatData);
   } catch (error) {
     console.log(error);
