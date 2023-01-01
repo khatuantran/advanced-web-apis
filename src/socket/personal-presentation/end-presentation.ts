@@ -58,11 +58,14 @@ export const endPresentation = async (
     console.log(`Client ${socket.id} end present ${data.presentationId}`);
     await socket.to(`${data.presentationId}`).emit("personal:end-present");
   } catch (error) {
-    return sendResponseToClient({
-      error: {
-        code: "unknown_error",
-        message: error.message,
-      },
-    });
+    console.log(error);
+    return typeof sendResponseToClient === "function"
+      ? sendResponseToClient({
+          error: {
+            code: "unknown_error",
+            message: error.message,
+          },
+        })
+      : null;
   }
 };

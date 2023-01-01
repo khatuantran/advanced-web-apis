@@ -79,15 +79,19 @@ export const startPresentation = async (
     //     },
     //   },
     // );
+    console.log(typeof sendResponseToClient);
     console.log(`Client ${socket.id} start present ${data.presentationId}`);
     await socket.join(`${data.presentationId}`);
     sendResponseToClient(slides);
   } catch (error) {
-    return sendResponseToClient({
-      error: {
-        code: "unknown_error",
-        message: error.message,
-      },
-    });
+    console.log(error);
+    return typeof sendResponseToClient === "function"
+      ? sendResponseToClient({
+          error: {
+            code: "unknown_error",
+            message: error.message,
+          },
+        })
+      : null;
   }
 };

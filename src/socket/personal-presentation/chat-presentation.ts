@@ -58,11 +58,14 @@ export const chatPresentation = async (
     await socket.to(`${data.presentationId}`).emit("personal:chat", chatData);
     sendResponseToClient(chatData);
   } catch (error) {
-    return sendResponseToClient({
-      error: {
-        code: "unknown_error",
-        message: error.message,
-      },
-    });
+    console.log(error);
+    return typeof sendResponseToClient === "function"
+      ? sendResponseToClient({
+          error: {
+            code: "unknown_error",
+            message: error.message,
+          },
+        })
+      : null;
   }
 };

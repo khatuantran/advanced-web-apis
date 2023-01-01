@@ -68,11 +68,14 @@ export const chooseOptionForSlide = async (
     sendResponseToClient(slides);
     socket.to(`${data.presentationId}`).emit("personal:choose-option", slides);
   } catch (error) {
-    return sendResponseToClient({
-      error: {
-        code: "unknown_error",
-        message: error.message,
-      },
-    });
+    console.log(error);
+    return typeof sendResponseToClient === "function"
+      ? sendResponseToClient({
+          error: {
+            code: "unknown_error",
+            message: error.message,
+          },
+        })
+      : null;
   }
 };

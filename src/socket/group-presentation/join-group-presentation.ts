@@ -88,11 +88,14 @@ export const joinGroupPresentation = async (
     await socket.join(`${data.groupId}`);
     sendResponseToClient(slides);
   } catch (error) {
-    return sendResponseToClient({
-      error: {
-        code: "unknown_error",
-        message: error.message,
-      },
-    });
+    console.log(error);
+    return typeof sendResponseToClient === "function"
+      ? sendResponseToClient({
+          error: {
+            code: "unknown_error",
+            message: error.message,
+          },
+        })
+      : null;
   }
 };

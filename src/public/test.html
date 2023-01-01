@@ -65,7 +65,7 @@
     })
 
     socket.emit("group:waiting",  (res) => {
-      console.log(res);
+      console.log(res);  // [ {groupId: "", groupName: "", presentationId: ""} ] or []
     })
 
   socket.on("group:start-present", (arg) => {

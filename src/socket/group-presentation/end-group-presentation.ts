@@ -1,4 +1,4 @@
-import { Group, Presentation, Slide } from "../../models";
+import { Group } from "../../models";
 import { isHavePermissionOwner } from "../../utils";
 import { GroupPresentationData, IError, ISlide } from "../type";
 
@@ -35,32 +35,32 @@ export const endGroupPresentation = async (
       },
       { where: { id: data.groupId } },
     );
-    const presentation = await Presentation.findOne({
-      where: {
-        id: data.presentationId,
-        // isPresent: true,
-      },
-    });
+    // const presentation = await Presentation.findOne({
+    //   where: {
+    //     id: data.presentationId,
+    //     // isPresent: true,
+    //   },
+    // });
 
-    if (!presentation) {
-      return sendResponseToClient({
-        error: {
-          code: "slide_not_found",
-          message: "Slide not found",
-        },
-      });
-    }
-    await Slide.update(
-      {
-        isSelected: false,
-      },
-      {
-        where: {
-          presentationId: data.presentationId,
-          isSelected: true,
-        },
-      },
-    );
+    // if (!presentation) {
+    //   return sendResponseToClient({
+    //     error: {
+    //       code: "slide_not_found",
+    //       message: "Slide not found",
+    //     },
+    //   });
+    // }
+    // await Slide.update(
+    //   {
+    //     isSelected: false,
+    //   },
+    //   {
+    //     where: {
+    //       presentationId: data.presentationId,
+    //       isSelected: true,
+    //     },
+    //   },
+    // );
     // await Presentation.update(
     //   {
     //     isPresent: false,

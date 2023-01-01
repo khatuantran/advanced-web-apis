@@ -78,11 +78,14 @@ export const transferSlide = async (
     await socket.to(`${data.presentationId}`).emit("personal:transfer-slide", slides);
     sendResponseToClient(slides);
   } catch (error) {
-    return sendResponseToClient({
-      error: {
-        code: "unknown_error",
-        message: error.message,
-      },
-    });
+    console.log(error);
+    return typeof sendResponseToClient === "function"
+      ? sendResponseToClient({
+          error: {
+            code: "unknown_error",
+            message: error.message,
+          },
+        })
+      : null;
   }
 };

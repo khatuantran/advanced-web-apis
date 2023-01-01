@@ -102,11 +102,14 @@ export const chooseOptionForSlideGroup = async (
     sendResponseToClient(slides);
     socket.to(`${data.groupId}`).emit("group:choose-option", slides);
   } catch (error) {
-    return sendResponseToClient({
-      error: {
-        code: "unknown_error",
-        message: error.message,
-      },
-    });
+    console.log(error);
+    return typeof sendResponseToClient === "function"
+      ? sendResponseToClient({
+          error: {
+            code: "unknown_error",
+            message: error.message,
+          },
+        })
+      : null;
   }
 };
