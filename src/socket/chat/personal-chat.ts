@@ -6,7 +6,7 @@ export const chatPersonalPresent = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   socket: any,
   data: PersonalPresentationData,
-  sendResponseToClient: (response: IError | IChat[]) => void,
+  sendResponseToClient: (response: IError | IChat) => void,
 ) => {
   try {
     console.log("Start chat socket");
@@ -70,8 +70,8 @@ export const chatPersonalPresent = async (
 
     console.log(`Client ${socket.id} push a chat to ${data.presentationId}`);
     console.log(chatData);
-    await socket.to(`${data.presentationId}`).emit("personal:chat", chatData);
-    sendResponseToClient(chatData);
+    await socket.to(`${data.presentationId}`).emit("personal:chat");
+    sendResponseToClient(chatData[0]);
   } catch (error) {
     console.log(error);
     return typeof sendResponseToClient === "function"

@@ -55,3 +55,11 @@ export type IGroupPresent = {
   groupName: string;
   presentationId: string;
 };
+
+export type IQuestion = {
+  id: string;
+  content: string;
+  isAnswer: boolean;
+  voteQuantity: number;
+  createdAt: Date;
+};

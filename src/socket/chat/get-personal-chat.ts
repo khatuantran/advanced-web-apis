@@ -42,7 +42,9 @@ export const getPersonalChat = async (
     });
 
     let newChatData = [] as IChat[];
+    let isHaveNew = false;
     if (data.createdAt) {
+      console.log(data.createdAt);
       let limit = 0;
       const date = new Date(data.createdAt);
       chatData.forEach((chat) => {
@@ -50,19 +52,25 @@ export const getPersonalChat = async (
           newChatData.push(chat);
         }
         if (chat.createdAt < date && limit < 10) {
+          console.log(chat.createdAt);
+          console.log(date);
+          console.log("aaaaaaaa");
+          isHaveNew = true;
           newChatData.push(chat);
           limit += 1;
         }
       });
     } else {
+      isHaveNew = true;
       if (chatData.length <= 10) {
         newChatData = chatData.slice();
       } else {
         newChatData = chatData.slice(0, 10);
       }
     }
-    console.log(newChatData);
     console.log(`Client ${socket.id} get all chat of present ${data.presentationId}`);
+    // newChatData = isHaveNew ? newChatData : [];
+    console.log(newChatData);
     // await socket.to(`${data.presentationId}`).emit("personal:get-chat", chatData);
     sendResponseToClient(newChatData);
   } catch (error) {

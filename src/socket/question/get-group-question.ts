@@ -1,15 +1,15 @@
 import { Chat, Group } from "../../models";
 import { isHavePermission } from "../../utils";
-import { GroupPresentationData, IChat, IError } from "../type";
+import { GroupPresentationData, IChat } from "../type";
 
-export const getGroupChat = async (
+export const getGroupQuestion = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   socket: any,
   data: GroupPresentationData,
-  sendResponseToClient: (response: IError | IChat[]) => void,
+  sendResponseToClient: (response) => void,
 ) => {
   try {
-    console.log("Start group chat socket");
+    console.log("Start group question socket");
 
     if (!socket?.userId) {
       return typeof sendResponseToClient === "function"
@@ -66,7 +66,6 @@ export const getGroupChat = async (
     let newChatData = [] as IChat[];
     if (data.createdAt) {
       let limit = 0;
-      console.log(data.createdAt);
       const date = new Date(data.createdAt);
       chatData.forEach((chat) => {
         if (chat.createdAt >= date) {
