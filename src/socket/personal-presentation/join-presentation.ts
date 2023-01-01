@@ -31,9 +31,6 @@ export const joinPresentation = async (
           {
             model: Presentation,
             as: "presentation",
-            where: {
-              isPresent: true,
-            },
           },
         ],
         order: [["createdAt", "ASC"]],
@@ -52,8 +49,8 @@ export const joinPresentation = async (
     if (!slides || slides.length === 0) {
       return sendResponseToClient({
         error: {
-          code: "slide_not_found",
-          message: "Slide not found",
+          code: "presentation_not_found",
+          message: "Presentation not found",
         },
       });
     }

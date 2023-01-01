@@ -1,4 +1,4 @@
-import { Presentation, Slide } from "../../models";
+import { Slide } from "../../models";
 import { IError, ISlide, PersonalPresentationData } from "../type";
 
 export const startPresentation = async (
@@ -69,16 +69,16 @@ export const startPresentation = async (
         },
       },
     );
-    await Presentation.update(
-      {
-        isPresent: true,
-      },
-      {
-        where: {
-          id: data.presentationId,
-        },
-      },
-    );
+    // await Presentation.update(
+    //   {
+    //     isPresent: true,
+    //   },
+    //   {
+    //     where: {
+    //       id: data.presentationId,
+    //     },
+    //   },
+    // );
     console.log(`Client ${socket.id} start present ${data.presentationId}`);
     await socket.join(`${data.presentationId}`);
     sendResponseToClient(slides);

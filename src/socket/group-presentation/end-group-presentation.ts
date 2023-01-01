@@ -38,7 +38,7 @@ export const endGroupPresentation = async (
     const presentation = await Presentation.findOne({
       where: {
         id: data.presentationId,
-        isPresent: true,
+        // isPresent: true,
       },
     });
 
@@ -61,16 +61,16 @@ export const endGroupPresentation = async (
         },
       },
     );
-    await Presentation.update(
-      {
-        isPresent: false,
-      },
-      {
-        where: {
-          id: data.presentationId,
-        },
-      },
-    );
+    // await Presentation.update(
+    //   {
+    //     isPresent: false,
+    //   },
+    //   {
+    //     where: {
+    //       id: data.presentationId,
+    //     },
+    //   },
+    // );
     console.log(`Client ${socket.id} end present ${data.presentationId}`);
     await socket.to(`${data.presentationId}`).emit("personal:end-present", { message: "end present" });
   } catch (error) {

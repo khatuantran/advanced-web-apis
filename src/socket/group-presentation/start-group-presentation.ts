@@ -1,4 +1,4 @@
-import { Group, Presentation, Slide } from "../../models";
+import { Group, Slide } from "../../models";
 import { isHavePermissionOwner } from "../../utils";
 import { GroupPresentationData, IError, ISlide } from "../type";
 
@@ -96,16 +96,16 @@ export const startGroupPresentation = async (
         },
       },
     );
-    await Presentation.update(
-      {
-        isPresent: true,
-      },
-      {
-        where: {
-          id: data.presentationId,
-        },
-      },
-    );
+    // await Presentation.update(
+    //   {
+    //     isPresent: true,
+    //   },
+    //   {
+    //     where: {
+    //       id: data.presentationId,
+    //     },
+    //   },
+    // );
     console.log(`Client ${socket.id} start present ${data.presentationId}`);
     await socket.join(`${data.groupId}`);
     socket.to(`${data.groupId}`).emit("group:start-present", {

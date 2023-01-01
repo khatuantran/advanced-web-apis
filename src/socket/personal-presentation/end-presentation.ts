@@ -1,4 +1,4 @@
-import { Presentation, Slide } from "../../models";
+import { Presentation } from "../../models";
 import { IError, ISlide, PersonalPresentationData } from "../type";
 
 export const endPresentation = async (
@@ -21,7 +21,7 @@ export const endPresentation = async (
     const presentation = await Presentation.findOne({
       where: {
         id: data.presentationId,
-        isPresent: true,
+        // isPresent: true,
         ownerId: socket.userId,
       },
     });
@@ -29,32 +29,32 @@ export const endPresentation = async (
     if (!presentation) {
       return sendResponseToClient({
         error: {
-          code: "slide_not_found",
-          message: "Slide not found",
+          code: "presentation_not_found",
+          message: "Presentation not found",
         },
       });
     }
-    await Slide.update(
-      {
-        isSelected: false,
-      },
-      {
-        where: {
-          presentationId: data.presentationId,
-          isSelected: true,
-        },
-      },
-    );
-    await Presentation.update(
-      {
-        isPresent: false,
-      },
-      {
-        where: {
-          id: data.presentationId,
-        },
-      },
-    );
+    // await Slide.update(
+    //   {
+    //     isSelected: false,
+    //   },
+    //   {
+    //     where: {
+    //       presentationId: data.presentationId,
+    //       isSelected: true,
+    //     },
+    //   },
+    // );
+    // await Presentation.update(
+    //   {
+    //     isPresent: false,
+    //   },
+    //   {
+    //     where: {
+    //       id: data.presentationId,
+    //     },
+    //   },
+    // );
     console.log(`Client ${socket.id} end present ${data.presentationId}`);
     await socket.to(`${data.presentationId}`).emit("personal:end-present");
   } catch (error) {

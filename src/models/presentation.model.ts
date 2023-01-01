@@ -34,6 +34,9 @@ export class Presentation extends Model<Presentation> {
   @Column(DataType.DATE)
   public updatedAt: Date;
 
+  @Column
+  public socketId: string;
+
   public slides: Slide[];
 
   public chats: Chat[];

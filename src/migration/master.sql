@@ -112,3 +112,5 @@ CREATE TABLE "chat"
     PRIMARY KEY ("id"),
     FOREIGN KEY ("presentationId") REFERENCES "presentation" ("id") ON UPDATE restrict ON DELETE cascade
 );
+
+ALTER TABLE "presentation" ADD COLUMN "socketId" TEXT NULL;

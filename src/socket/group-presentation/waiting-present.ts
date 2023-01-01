@@ -41,6 +41,7 @@ export const waitingGroupPresentation = async (
       }
       await socket.join(`${group.groupId}}`);
     });
+    console.log("Waiting group present", groupPresent);
     sendResponseToClient(groupPresent ? groupPresent : []);
   } catch (error) {
     return sendResponseToClient({

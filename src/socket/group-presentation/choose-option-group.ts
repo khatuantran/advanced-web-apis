@@ -1,5 +1,5 @@
 import { Op } from "sequelize";
-import { ISlideOption, Slide, SlideType } from "../../models";
+import { Group, ISlideOption, Slide, SlideType } from "../../models";
 import { isHavePermission } from "../../utils";
 import { IError, IGroupChooseOption, ISlide } from "../type";
 
@@ -29,6 +29,22 @@ export const chooseOptionForSlideGroup = async (
         },
       });
     }
+    const group = await Group.findOne({
+      where: {
+        id: data.groupId,
+        presentationId: data.presentationId,
+      },
+    });
+
+    if (!group) {
+      return sendResponseToClient({
+        error: {
+          code: "not_present",
+          message: "No one have present",
+        },
+      });
+    }
+
     let slideIndex = -1;
     const slides = (
       await Slide.findAll({

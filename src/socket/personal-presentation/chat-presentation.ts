@@ -13,7 +13,6 @@ export const chatPresentation = async (
     const presentation = await Presentation.findOne({
       where: {
         id: data?.presentationId,
-        isPresent: true,
       },
     });
 
