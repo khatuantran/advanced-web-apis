@@ -1,3 +1,4 @@
+import { Op, WhereOptions } from "sequelize";
 import { Chat, ChatType, Presentation } from "../../models";
 import { IChat, IError, PersonalPresentationData } from "../type";
 
@@ -44,11 +45,20 @@ export const chatPersonalPresent = async (
       type: ChatType.MESSAGE,
     });
 
+    const whereOption: WhereOptions = {
+      presentationId: data.presentationId,
+    };
+
+    if (data.createdAt) {
+      whereOption.createdAt = {
+        [Op.gte]: data.createdAt,
+      };
+    }
+
+    console.log(whereOption);
     const chatData = (
       await Chat.findAll({
-        where: {
-          presentationId: data.presentationId,
-        },
+        where: whereOption,
         order: [["createdAt", "DESC"]],
       })
     ).map((chat) => {
@@ -59,6 +69,7 @@ export const chatPersonalPresent = async (
     });
 
     console.log(`Client ${socket.id} push a chat to ${data.presentationId}`);
+    console.log(chatData);
     await socket.to(`${data.presentationId}`).emit("personal:chat", chatData);
     sendResponseToClient(chatData);
   } catch (error) {

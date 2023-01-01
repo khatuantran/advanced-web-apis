@@ -63,9 +63,30 @@ export const getGroupChat = async (
       } as IChat;
     });
 
+    let newChatData = [] as IChat[];
+    if (data.createdAt) {
+      let limit = 0;
+      const date = new Date(data.createdAt);
+      chatData.forEach((chat) => {
+        if (chat.createdAt >= date) {
+          newChatData.push(chat);
+        }
+        if (chat.createdAt < date && limit < 10) {
+          newChatData.push(chat);
+          limit += 1;
+        }
+      });
+    } else {
+      if (chatData.length <= 10) {
+        newChatData = chatData.slice();
+      } else {
+        newChatData = chatData.slice(0, 10);
+      }
+    }
+    console.log(newChatData);
     console.log(`Client ${socket.id} push a chat to ${data.presentationId}`);
     // await socket.to(`${data.groupId}`).emit("group:get-chat", chatData);
-    sendResponseToClient(chatData);
+    sendResponseToClient(newChatData);
   } catch (error) {
     console.log(error);
     return typeof sendResponseToClient === "function"

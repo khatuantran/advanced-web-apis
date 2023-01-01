@@ -1,9 +1,10 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { Op, WhereOptions } from "sequelize";
 import { Chat, ChatType, Group } from "../../models";
 import { isHavePermission } from "../../utils";
 import { GroupPresentationData, IChat, IError } from "../type";
 
 export const chatGroupPresent = async (
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   socket: any,
   data: GroupPresentationData,
   sendResponseToClient: (response: IError | IChat[]) => void,
@@ -66,11 +67,18 @@ export const chatGroupPresent = async (
       type: ChatType.MESSAGE,
     });
 
+    const whereOption: WhereOptions = {
+      presentationId: data.presentationId,
+    };
+
+    if (data.createdAt) {
+      whereOption.createdAt = {
+        [Op.gte]: data.createdAt,
+      };
+    }
     const chatData = (
       await Chat.findAll({
-        where: {
-          presentationId: data.presentationId,
-        },
+        where: whereOption,
         order: [["createdAt", "DESC"]],
       })
     ).map((chat) => {

@@ -32,6 +32,14 @@
       console.log(res);
     })
 
+    socket.emit("personal:get-chat", {
+    // groupId: "ff0ee345-48bd-4c2c-ad10-879869174190",
+    presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
+    createdAt: new Date("2023-01-01T13:54:25.049Z")
+    // slideId: "60e1e513-4127-459f-8011-bf35f5a7d152"
+  } , (res) => {
+      console.log(res);
+    })
   socket.on("group:chat", (arg) => {
     console.log(arg);
   })
@@ -45,41 +53,46 @@
   // socket.on("personal:choose-option", (arg) => {
   //   console.log(arg);
   // })
-  socket.emit("personal:get-chat", { presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709" } , (arg) => {
-    console.log(arg);
-  })
+  // socket.emit("personal:get-chat", { presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709"} , (arg) => {
+  //   console.log(arg);
+  // })
 
-  socket.emit("personal:get-chat", { presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709" } , (arg) => {
-    console.log(arg);
-  })
+  // socket.emit("personal:get-chat", { presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709" } , (arg) => {
+  //   console.log(arg);
+  // })
   socket.on("personal:chat", (arg) => {
     console.log(arg);
   })
-  socket.emit("group:chat", {
-      groupId: "ff0ee345-48bd-4c2c-ad10-879869174190",
-      presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
-      message: "Hello"
-    }, (arg) => console.log(arg))
+  // socket.emit("group:chat", {
+  //     groupId: "ff0ee345-48bd-4c2c-ad10-879869174190",
+  //     presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
+  //     message: "Hello"
+  //   }, (arg) => console.log(arg))
 
-  socket.emit("group:get-chat", { 
-    groupId: "ff0ee345-48bd-4c2c-ad10-879869174190",
-    presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709" 
-  } , (arg) => {
-    console.log(arg);
-  })
-  socket.on("group:chat", (arg) => {
-    console.log(arg);
-  })
-  socket.emit("group:chat", {
-      groupId: "ff0ee345-48bd-4c2c-ad10-879869174190",
-      presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
-      message: "Hello"
-    }, (arg) => console.log(arg))
+  // socket.emit("group:get-chat", { 
+  //   groupId: "ff0ee345-48bd-4c2c-ad10-879869174190",
+  //   presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709" 
+  // } , (arg) => {
+  //   console.log(arg);
+  // })
+  // socket.on("group:chat", (arg) => {
+  //   console.log(arg);
+  // })
+  // socket.emit("group:chat", {
+  //     groupId: "ff0ee345-48bd-4c2c-ad10-879869174190",
+  //     presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
+  //     message: "Hello"
+  //   }, (arg) => console.log(arg))
   
   const socketClick = () => {
 
     // topic choose - presentationId - slideId - order
-    
+      socket.emit("personal:chat", {
+      // groupId: "ff0ee345-48bd-4c2c-ad10-879869174190",
+      presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
+      message: "Hello",
+      createdAt: "2023-01-01T13:49:56.954Z"
+    }, (arg) => console.log(arg))
   }
 
   //lắng nghe thay đổi topic stat

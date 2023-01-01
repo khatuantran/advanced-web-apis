@@ -21,6 +21,7 @@ export type GroupPresentationData = {
   slideId?: string;
   userId?: string;
   message?: string;
+  createdAt?: Date;
 };
 
 export type PersonalPresentationData = {
@@ -28,6 +29,7 @@ export type PersonalPresentationData = {
   slideId?: string;
   userId?: string;
   message?: string;
+  createdAt?: Date;
 };
 
 export type IChooseOption = {
