@@ -1,44 +1,22 @@
-import { Group, Question } from "../../models";
-import { isHavePermission } from "../../utils";
-import { GroupPresentationData, IQuestion } from "../type";
+import { Presentation, Question } from "../../models";
+import { IQuestion, PersonalPresentationData } from "../type";
 
-export const getGroupQuestion = async (
+export const postQuestion = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   socket: any,
-  data: GroupPresentationData,
+  data: PersonalPresentationData,
   sendResponseToClient: (response) => void,
 ) => {
   try {
-    console.log("Start group question socket");
+    console.log("Post a question");
 
-    if (!socket?.userId) {
-      return typeof sendResponseToClient === "function"
-        ? sendResponseToClient({
-            error: {
-              code: "user_not_found",
-              message: "User not found",
-            },
-          })
-        : null;
-    }
-
-    if (!(await isHavePermission(socket.userId, data.groupId))) {
-      return sendResponseToClient({
-        error: {
-          code: "permission_denied",
-          message: "Permission denied",
-        },
-      });
-    }
-
-    const group = await Group.findOne({
+    const presentation = await Presentation.findOne({
       where: {
-        id: data?.groupId,
+        id: data?.presentationId,
       },
     });
 
-    if (!group || !group.presentationId || group?.presentationId !== data.presentationId) {
-      console.log("group not present");
+    if (!presentation) {
       return typeof sendResponseToClient === "function"
         ? sendResponseToClient({
             error: {
@@ -48,6 +26,24 @@ export const getGroupQuestion = async (
           })
         : null;
     }
+
+    if (!data?.message) {
+      return typeof sendResponseToClient === "function"
+        ? sendResponseToClient({
+            error: {
+              code: "message_required",
+              message: "Message is required",
+            },
+          })
+        : null;
+    }
+
+    await Question.create({
+      presentationId: presentation.id,
+      content: data.message,
+      isAnswer: false,
+      voteQuantity: 0,
+    });
 
     const answeredQuestion = [] as IQuestion[];
     const unAnsweredQuestion = [] as IQuestion[];
@@ -76,8 +72,13 @@ export const getGroupQuestion = async (
           } as IQuestion);
     });
 
-    console.log(`Client ${socket.id} get question of present ${data.presentationId}`);
-    // await socket.to(`${data.groupId}`).emit("group:get-chat", chatData);
+    console.log(`Client ${socket.id} push a question to ${data.presentationId}`);
+    console.log(answeredQuestion);
+    console.log(unAnsweredQuestion);
+    socket.to(`${data.presentationId}`).emit("personal:post-question", {
+      answeredQuestionList: answeredQuestion.length > 0 ? answeredQuestion : [],
+      unAnsweredQuestionList: unAnsweredQuestion.length > 0 ? unAnsweredQuestion : [],
+    });
     sendResponseToClient({
       answeredQuestionList: answeredQuestion.length > 0 ? answeredQuestion : [],
       unAnsweredQuestionList: unAnsweredQuestion.length > 0 ? unAnsweredQuestion : [],

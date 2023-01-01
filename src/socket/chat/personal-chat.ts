@@ -55,7 +55,6 @@ export const chatPersonalPresent = async (
       };
     }
 
-    console.log(whereOption);
     const chatData = (
       await Chat.findAll({
         where: whereOption,
@@ -70,7 +69,7 @@ export const chatPersonalPresent = async (
 
     console.log(`Client ${socket.id} push a chat to ${data.presentationId}`);
     console.log(chatData);
-    await socket.to(`${data.presentationId}`).emit("personal:chat");
+    await socket.to(`${data.presentationId}`).emit("personal:chat", chatData[0]);
     sendResponseToClient(chatData[0]);
   } catch (error) {
     console.log(error);

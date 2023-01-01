@@ -1,4 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Chat, Presentation } from "../../models";
 import { IChat, IError, PersonalPresentationData } from "../type";
 

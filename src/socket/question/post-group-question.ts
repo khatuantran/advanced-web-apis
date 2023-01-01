@@ -2,24 +2,21 @@ import { Group, Question } from "../../models";
 import { isHavePermission } from "../../utils";
 import { GroupPresentationData, IQuestion } from "../type";
 
-export const getGroupQuestion = async (
+export const postGroupQuestion = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   socket: any,
   data: GroupPresentationData,
   sendResponseToClient: (response) => void,
 ) => {
   try {
-    console.log("Start group question socket");
-
-    if (!socket?.userId) {
-      return typeof sendResponseToClient === "function"
-        ? sendResponseToClient({
-            error: {
-              code: "user_not_found",
-              message: "User not found",
-            },
-          })
-        : null;
+    console.log("Group");
+    if (!socket.userId) {
+      return sendResponseToClient({
+        error: {
+          code: "user_not_found",
+          message: "User not found",
+        },
+      });
     }
 
     if (!(await isHavePermission(socket.userId, data.groupId))) {
@@ -30,10 +27,10 @@ export const getGroupQuestion = async (
         },
       });
     }
-
     const group = await Group.findOne({
       where: {
-        id: data?.groupId,
+        id: data.groupId,
+        presentationId: data.presentationId,
       },
     });
 
@@ -76,9 +73,13 @@ export const getGroupQuestion = async (
           } as IQuestion);
     });
 
-    console.log(`Client ${socket.id} get question of present ${data.presentationId}`);
+    console.log(`Client ${socket.id} post question of present ${data.presentationId}`);
     // await socket.to(`${data.groupId}`).emit("group:get-chat", chatData);
     sendResponseToClient({
+      answeredQuestionList: answeredQuestion.length > 0 ? answeredQuestion : [],
+      unAnsweredQuestionList: unAnsweredQuestion.length > 0 ? unAnsweredQuestion : [],
+    });
+    socket.to(`${data.groupId}`).emit("group:post-question", {
       answeredQuestionList: answeredQuestion.length > 0 ? answeredQuestion : [],
       unAnsweredQuestionList: unAnsweredQuestion.length > 0 ? unAnsweredQuestion : [],
     });
