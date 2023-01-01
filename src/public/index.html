@@ -24,8 +24,8 @@
   }
 });
   // topic join room - presentationId - slideId
-  socket.emit("group:join-present", {
-    groupId: "ff0ee345-48bd-4c2c-ad10-879869174190",
+  socket.emit("personal:start-present", {
+    // groupId: "ff0ee345-48bd-4c2c-ad10-879869174190",
     presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709", 
     slideId: "60e1e513-4127-459f-8011-bf35f5a7d152"
   } , (res) => {
@@ -45,18 +45,41 @@
   // socket.on("personal:choose-option", (arg) => {
   //   console.log(arg);
   // })
-  
-  socket.on("group:chat", (arg) => {
+  socket.emit("personal:get-chat", { presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709" } , (arg) => {
     console.log(arg);
   })
-  const socketClick = () => {
 
-    // topic choose - presentationId - slideId - order
-    socket.emit("group:chat", {
+  socket.emit("personal:get-chat", { presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709" } , (arg) => {
+    console.log(arg);
+  })
+  socket.on("personal:chat", (arg) => {
+    console.log(arg);
+  })
+  socket.emit("group:chat", {
       groupId: "ff0ee345-48bd-4c2c-ad10-879869174190",
       presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
       message: "Hello"
     }, (arg) => console.log(arg))
+
+  socket.emit("group:get-chat", { 
+    groupId: "ff0ee345-48bd-4c2c-ad10-879869174190",
+    presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709" 
+  } , (arg) => {
+    console.log(arg);
+  })
+  socket.on("group:chat", (arg) => {
+    console.log(arg);
+  })
+  socket.emit("group:chat", {
+      groupId: "ff0ee345-48bd-4c2c-ad10-879869174190",
+      presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
+      message: "Hello"
+    }, (arg) => console.log(arg))
+  
+  const socketClick = () => {
+
+    // topic choose - presentationId - slideId - order
+    
   }
 
   //lắng nghe thay đổi topic stat
