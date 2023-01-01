@@ -8,7 +8,6 @@ import { startPresentation } from "./start-presentation";
 import { transferSlide } from "./transfer-slide";
 
 export const personalPresentationHandlers = (io: Server, socket: Socket) => {
-  const socketNotType = socket as any;
   socket.on("personal:start-present", async (data: PersonalPresentationData, callBack: any) => {
     await startPresentation(socket, data, callBack);
   });
