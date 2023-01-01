@@ -37,7 +37,7 @@ export const joinGroupPresentation = async (
       },
     });
 
-    if (group.presentationId || group?.presentationId != data.presentationId) {
+    if (!group.presentationId || group?.presentationId != data.presentationId) {
       console.log("Group not have presentation or presentationId different");
       return sendResponseToClient({
         error: {
