@@ -1,11 +1,11 @@
 import { Chat, ChatType, Presentation } from "../../models";
-import { IChat, IError, ISlide, PersonalPresentationData } from "../type";
+import { IChat, IError, PersonalPresentationData } from "../type";
 
-export const chatPresentation = async (
+export const chatPersonalPresent = async (
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   socket: any,
   data: PersonalPresentationData,
-  sendResponseToClient: (response: ISlide[] | IError | IChat[]) => void,
+  sendResponseToClient: (response: IError | IChat[]) => void,
 ) => {
   try {
     console.log("Start chat socket");

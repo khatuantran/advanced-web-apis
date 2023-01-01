@@ -75,6 +75,9 @@ export const startGroupPresentation = async (
         },
       });
     }
+    await group.update({
+      presentationId: data.presentationId,
+    });
     await Slide.update(
       {
         isSelected: false,
@@ -96,16 +99,6 @@ export const startGroupPresentation = async (
         },
       },
     );
-    // await Presentation.update(
-    //   {
-    //     isPresent: true,
-    //   },
-    //   {
-    //     where: {
-    //       id: data.presentationId,
-    //     },
-    //   },
-    // );
     console.log(`Client ${socket.id} start present ${data.presentationId}`);
     await socket.join(`${data.groupId}`);
     socket.to(`${data.groupId}`).emit("group:start-present", {

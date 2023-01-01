@@ -35,42 +35,6 @@ export const endGroupPresentation = async (
       },
       { where: { id: data.groupId } },
     );
-    // const presentation = await Presentation.findOne({
-    //   where: {
-    //     id: data.presentationId,
-    //     // isPresent: true,
-    //   },
-    // });
-
-    // if (!presentation) {
-    //   return sendResponseToClient({
-    //     error: {
-    //       code: "slide_not_found",
-    //       message: "Slide not found",
-    //     },
-    //   });
-    // }
-    // await Slide.update(
-    //   {
-    //     isSelected: false,
-    //   },
-    //   {
-    //     where: {
-    //       presentationId: data.presentationId,
-    //       isSelected: true,
-    //     },
-    //   },
-    // );
-    // await Presentation.update(
-    //   {
-    //     isPresent: false,
-    //   },
-    //   {
-    //     where: {
-    //       id: data.presentationId,
-    //     },
-    //   },
-    // );
     console.log(`Client ${socket.id} end present ${data.presentationId}`);
     await socket.to(`${data.presentationId}`).emit("personal:end-present", { message: "end present" });
   } catch (error) {

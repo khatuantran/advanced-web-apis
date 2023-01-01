@@ -59,9 +59,6 @@ export const joinGroupPresentation = async (
           {
             model: Presentation,
             as: "presentation",
-            // where: {
-            //   isPresent: true,
-            // },
           },
         ],
         order: [["createdAt", "ASC"]],

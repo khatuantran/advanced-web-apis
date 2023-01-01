@@ -27,27 +27,29 @@
   socket.emit("personal:start-present", {presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709", slideId: "60e1e513-4127-459f-8011-bf35f5a7d152"} , (res) => {
       console.log(res);
     })
+
+  socket.on("personal:chat", (arg) => {
+    console.log(arg);
+  })
   // socket.emit("join room", "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709", "00d61169-4415-42c7-931a-d105979040bc", (res) => {
   //   console.log(res);
   // })
 
-  socket.emit("group:waiting",  (res) => {
-      console.log(res);
-    })
-  socket.on("personal:choose-option", (arg) => {
-    console.log(arg);
-  })
+  // socket.emit("group:waiting",  (res) => {
+  //     console.log(res);
+  //   })
+  // socket.on("personal:choose-option", (arg) => {
+  //   console.log(arg);
+  // })
   
   
   const socketClick = () => {
 
     // topic choose - presentationId - slideId - order
-    socket.emit("personal:end-present", {
+    socket.emit("personal:chat", {
       presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709", 
-      slideId: "db0badb5-fee4-432e-9a77-a361c542da19"
-    } , () => {
-      console.log("end present");
-    })
+      message: "Hé lô bà dà"
+    }, (arg) => console.log(arg))
   }
 
   //lắng nghe thay đổi topic stat
