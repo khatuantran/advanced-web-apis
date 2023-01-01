@@ -82,6 +82,7 @@ export const startPresentation = async (
     console.log(typeof sendResponseToClient);
     console.log(`Client ${socket.id} start present ${data.presentationId}`);
     await socket.join(`${data.presentationId}`);
+    await socket.to(`${data.presentationId}`).emit("personal:transfer-slide", slides);
     sendResponseToClient(slides);
   } catch (error) {
     console.log(error);
