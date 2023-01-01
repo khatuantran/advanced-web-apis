@@ -21,16 +21,6 @@ export const chatPresentationHandlers = (io: Server, socket: Socket) => {
   });
 
   socket.on("personal:get-chat", async (data: PersonalPresentationData, callBack: any) => {
-    if (!io.sockets.adapter.rooms.has(data?.presentationId)) {
-      return typeof callBack === "function"
-        ? callBack({
-            error: {
-              code: "personal_room_not_found",
-              message: "Personal room not found",
-            },
-          })
-        : null;
-    }
     await getPersonalChat(socket, data, callBack);
   });
 
@@ -49,16 +39,6 @@ export const chatPresentationHandlers = (io: Server, socket: Socket) => {
   });
 
   socket.on("group:get-chat", async (data: GroupPresentationData, callBack: any) => {
-    if (!io.sockets.adapter.rooms.has(data?.groupId)) {
-      return typeof callBack === "function"
-        ? callBack({
-            error: {
-              code: "group_room_not_found",
-              message: "Personal room not found",
-            },
-          })
-        : null;
-    }
     await getGroupChat(socket, data, callBack);
   });
 };
