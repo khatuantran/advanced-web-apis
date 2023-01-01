@@ -7,7 +7,7 @@ import { GroupPresentationData, IChat, IError } from "../type";
 export const chatGroupPresent = async (
   socket: any,
   data: GroupPresentationData,
-  sendResponseToClient: (response: IError | IChat[]) => void,
+  sendResponseToClient: (response: IError | IChat) => void,
 ) => {
   try {
     console.log("Start group chat socket");
@@ -90,7 +90,8 @@ export const chatGroupPresent = async (
 
     console.log(`Client ${socket.id} push a chat to ${data.presentationId}`);
     await socket.to(`${data.groupId}`).emit("group:chat", chatData);
-    sendResponseToClient(chatData);
+    sendResponseToClient(chatData[0]);
+    // sendResponseToClient(chatData);
   } catch (error) {
     console.log(error);
     return typeof sendResponseToClient === "function"
