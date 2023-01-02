@@ -1,6 +1,7 @@
 import express from "express";
 import {
   assignRole,
+  checkGroupPresent,
   createGroup,
   generateInviteLink,
   getInviteLink,
@@ -24,4 +25,5 @@ groupRouter.post("/:groupId/kick-out", kickOut);
 groupRouter.post("/:groupId/leave-group", leaveGroup);
 groupRouter.post("/:groupId/send-invite-email", sendInvitationEmail);
 groupRouter.get("/join-by-link", joinGroupByLink);
+groupRouter.post("/check-group-present", checkGroupPresent);
 export { groupRouter };

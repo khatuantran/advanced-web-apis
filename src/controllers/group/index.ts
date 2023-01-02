@@ -1,4 +1,5 @@
 export * from "./assign-role";
+export * from "./check-group-present";
 export * from "./create-group";
 export * from "./generate-invitation-link";
 export * from "./get-invitation-link";
