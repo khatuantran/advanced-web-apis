@@ -37,17 +37,19 @@ export const getGroupChat = async (
       },
     });
 
-    // if (!group || !group.presentationId || group?.presentationId !== data.presentationId) {
-    //   console.log("group not present");
-    //   return typeof sendResponseToClient === "function"
-    //     ? sendResponseToClient({
-    //         error: {
-    //           code: "presentation_not_found",
-    //           message: "Presentation not found",
-    //         },
-    //       })
-    //     : null;
-    // }
+    if (!group || !group.presentationId || group?.presentationId !== data.presentationId) {
+      console.log("group not present");
+      console.log("===============", group?.presentationId);
+      console.log("===============", data?.presentationId);
+      // return typeof sendResponseToClient === "function"
+      //   ? sendResponseToClient({
+      //       error: {
+      //         code: "presentation_not_found",
+      //         message: "Presentation not found",
+      //       },
+      //     })
+      //   : null;
+    }
 
     const chatData = (
       await Chat.findAll({
