@@ -72,7 +72,8 @@ export const postQuestion = async (
           } as IQuestion);
     });
 
-    console.log(`Client ${socket.id} push a question to ${data.presentationId}`);
+    console.log(`Client ${socket.id} post question ${data.message} of present ${data.presentationId}`);
+
     console.log(answeredQuestion);
     console.log(unAnsweredQuestion);
     socket.to(`${data.presentationId}`).emit("personal:post-question", {

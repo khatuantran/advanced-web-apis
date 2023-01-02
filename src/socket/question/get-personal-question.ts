@@ -8,7 +8,7 @@ export const getPersonalQuestionList = async (
   sendResponseToClient: (response) => void,
 ) => {
   try {
-    console.log("Start group chat socket");
+    console.log("Start group question socket");
 
     const answeredQuestion = [] as IQuestion[];
     const unAnsweredQuestion = [] as IQuestion[];
@@ -37,7 +37,9 @@ export const getPersonalQuestionList = async (
           } as IQuestion);
     });
 
-    console.log(`Client ${socket.id} push a chat to ${data.presentationId}`);
+    console.log(`Client ${socket.id} get list question of ${data.presentationId}`);
+    console.log(answeredQuestion);
+    console.log(unAnsweredQuestion);
     // await socket.to(`${data.groupId}`).emit("group:get-chat", chatData);
     sendResponseToClient({
       answeredQuestionList: answeredQuestion.length > 0 ? answeredQuestion : [],

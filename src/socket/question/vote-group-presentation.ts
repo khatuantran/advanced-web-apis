@@ -94,7 +94,8 @@ export const voteGroupQuestion = async (
           } as IQuestion);
     });
 
-    console.log(`Client ${socket.id} like question to ${data.questionId}`);
+    console.log("Group");
+    console.log(`Client ${socket.id} vote question ${data.questionId}`);
     console.log(answeredQuestion);
     console.log(unAnsweredQuestion);
     socket.to(`${data.groupId}`).emit("group:vote-question", {

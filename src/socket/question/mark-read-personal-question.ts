@@ -84,7 +84,7 @@ export const markAsReadPersonalQuestion = async (
           } as IQuestion);
     });
 
-    console.log(`Client ${socket.id} like question to ${data.questionId}`);
+    console.log(`Client ${socket.id} mark question ${question.id} as read ${data.questionId}`);
     console.log(answeredQuestion);
     console.log(unAnsweredQuestion);
     socket.to(`${data.presentationId}`).emit("personal:mark-as-read", {

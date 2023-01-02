@@ -74,7 +74,7 @@ export const voteQuestion = async (
           } as IQuestion);
     });
 
-    console.log(`Client ${socket.id} like question to ${data.questionId}`);
+    console.log(`Client ${socket.id} vote question ${data.questionId}`);
     console.log(answeredQuestion);
     console.log(unAnsweredQuestion);
     socket.to(`${data.presentationId}`).emit("personal:vote-question", {

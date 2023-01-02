@@ -76,7 +76,8 @@ export const getGroupQuestion = async (
           } as IQuestion);
     });
 
-    console.log(`Client ${socket.id} get question of present ${data.presentationId}`);
+    console.log("Group");
+    console.log(`Client ${socket.id} get list question of present ${data.presentationId}`);
     // await socket.to(`${data.groupId}`).emit("group:get-chat", chatData);
     sendResponseToClient({
       answeredQuestionList: answeredQuestion.length > 0 ? answeredQuestion : [],

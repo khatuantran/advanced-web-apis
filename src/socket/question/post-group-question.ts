@@ -9,7 +9,6 @@ export const postGroupQuestion = async (
   sendResponseToClient: (response) => void,
 ) => {
   try {
-    console.log("Group");
     if (!socket.userId) {
       return sendResponseToClient({
         error: {
@@ -73,7 +72,8 @@ export const postGroupQuestion = async (
           } as IQuestion);
     });
 
-    console.log(`Client ${socket.id} post question of present ${data.presentationId}`);
+    console.log("Group");
+    console.log(`Client ${socket.id} post question ${data.message} of present ${data.presentationId}`);
     // await socket.to(`${data.groupId}`).emit("group:get-chat", chatData);
     sendResponseToClient({
       answeredQuestionList: answeredQuestion.length > 0 ? answeredQuestion : [],
