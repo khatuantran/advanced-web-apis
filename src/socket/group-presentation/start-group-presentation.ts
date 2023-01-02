@@ -67,14 +67,15 @@ export const startGroupPresentation = async (
       },
     });
 
-    if (group.presentationId) {
-      return sendResponseToClient({
-        error: {
-          code: "group_have_another_present",
-          message: "One presentation are present in group",
-        },
-      });
-    }
+    // if (group.presentationId) {
+    //   return sendResponseToClient({
+    //     error: {
+    //       code: "group_have_another_present",
+    //       message: "One presentation are present in group",
+    //     },
+    //   });
+    // }
+
     await group.update({
       presentationId: data.presentationId,
     });

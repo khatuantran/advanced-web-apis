@@ -1,5 +1,5 @@
 import { Op } from "sequelize";
-import { Group, Presentation, Slide } from "../../models";
+import { Presentation, Slide } from "../../models";
 import { isHavePermission } from "../../utils";
 import { GroupPresentationData, IError, ISlide } from "../type";
 
@@ -31,21 +31,21 @@ export const joinGroupPresentation = async (
       });
     }
 
-    const group = await Group.findOne({
-      where: {
-        id: data.groupId,
-      },
-    });
+    // const group = await Group.findOne({
+    //   where: {
+    //     id: data.groupId,
+    //   },
+    // });
 
-    if (!group.presentationId || group?.presentationId != data.presentationId) {
-      console.log("Group not have presentation or presentationId different");
-      return sendResponseToClient({
-        error: {
-          code: "not_present",
-          message: "No one have present",
-        },
-      });
-    }
+    // if (!group.presentationId || group?.presentationId != data.presentationId) {
+    //   console.log("Group not have presentation or presentationId different");
+    //   return sendResponseToClient({
+    //     error: {
+    //       code: "not_present",
+    //       message: "No one have present",
+    //     },
+    //   });
+    // }
 
     const slides = (
       await Slide.findAll({

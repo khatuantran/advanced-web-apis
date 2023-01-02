@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Op, WhereOptions } from "sequelize";
-import { Chat, ChatType, Group } from "../../models";
+import { Chat, ChatType } from "../../models";
 import { isHavePermission } from "../../utils";
 import { GroupPresentationData, IChat, IError } from "../type";
 
@@ -32,23 +32,23 @@ export const chatGroupPresent = async (
       });
     }
 
-    const group = await Group.findOne({
-      where: {
-        id: data?.groupId,
-      },
-    });
+    // const group = await Group.findOne({
+    //   where: {
+    //     id: data?.groupId,
+    //   },
+    // });
 
-    if (!group || !group.presentationId || group?.presentationId !== data.presentationId) {
-      console.log("group not present");
-      return typeof sendResponseToClient === "function"
-        ? sendResponseToClient({
-            error: {
-              code: "presentation_not_found",
-              message: "Presentation not found",
-            },
-          })
-        : null;
-    }
+    // if (!group || !group.presentationId || group?.presentationId !== data.presentationId) {
+    //   console.log("group not present");
+    //   return typeof sendResponseToClient === "function"
+    //     ? sendResponseToClient({
+    //         error: {
+    //           code: "presentation_not_found",
+    //           message: "Presentation not found",
+    //         },
+    //       })
+    //     : null;
+    // }
 
     if (!data?.message) {
       return typeof sendResponseToClient === "function"
