@@ -97,7 +97,7 @@ export const markAsReadGroupQuestion = async (
     console.log(`Client ${socket.id} like question to ${data.questionId}`);
     console.log(answeredQuestion);
     console.log(unAnsweredQuestion);
-    socket.to(`${data.presentationId}`).emit("group:mark-as-read", {
+    socket.to(`${data.groupId}`).emit("group:mark-as-read", {
       answeredQuestionList: answeredQuestion.length > 0 ? answeredQuestion : [],
       unAnsweredQuestionList: unAnsweredQuestion.length > 0 ? unAnsweredQuestion : [],
     });

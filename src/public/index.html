@@ -42,7 +42,32 @@
   //   })
 
   socket.emit("personal:get-question", {
+    presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
+  } , (res) => console.log(res))
+
+//arg: { 
+//     answeredQuestionList: [{id: "",  content:"", voteQuantity: "", isAnswer: ""}], 
+//     unAnsweredQuestionList: [{id: "",  content:"", voteQuantity: "", isAnswer: ""}]
+//  }
+  socket.emit("personal:post-question", {presentationId: "", message: ""}, (arg) => console.log(arg))
+  socket.emit("personal:vote-question", {presentationId: "", questionId: ""}, (arg) => console.log(arg))
+  socket.emit("personal:mark-as-read", {presentationId: "", questionId: ""}, (arg) => console.log(arg))
+  socket.on("personal:post-question", (arg) => console.log(arg))
+  socket.on("personal:vote-question", (arg) => console.log(arg))
+  socket.on("personal:mark-as-read", (arg) => console.log(arg))
+    socket.emit("personal:vote-question", {
     // groupId: "ff0ee345-48bd-4c2c-ad10-879869174190",
+    questionId: "9a4f8a26-13f5-4315-9279-0c71190f9a81",
+    presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
+    // createdAt: "2023-01-01T16:07:55.295Z"
+    // slideId: "60e1e513-4127-459f-8011-bf35f5a7d152"
+  } , (res) => {
+      console.log(res);
+    })
+
+    socket.emit("personal:mark-as-read", {
+    // groupId: "ff0ee345-48bd-4c2c-ad10-879869174190",
+    questionId: "9a4f8a26-13f5-4315-9279-0c71190f9a81",
     presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
     // createdAt: "2023-01-01T16:07:55.295Z"
     // slideId: "60e1e513-4127-459f-8011-bf35f5a7d152"
@@ -52,6 +77,8 @@
   socket.on("group:chat", (arg) => {
     console.log(arg);
   })
+
+  socket.on("personal:vote-question", (arg) => console.log(arg))
   // socket.emit("join room", "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709", "00d61169-4415-42c7-931a-d105979040bc", (res) => {
   //   console.log(res);
   // })
@@ -105,6 +132,21 @@
     }, (arg) => console.log(arg))
   }
 
+  socket.emit("group:get-question", {
+    groupId: "",
+    presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
+  } , (res) => console.log(res))
+
+//arg: { 
+//     answeredQuestionList: [{id: "",  content:"", voteQuantity: "", isAnswer: ""}], 
+//     unAnsweredQuestionList: [{id: "",  content:"", voteQuantity: "", isAnswer: ""}]
+//  }
+  socket.emit("personal:post-question", {groupId: "", presentationId: "", message: ""}, (arg) => console.log(arg))
+  socket.emit("personal:vote-question", {groupId: "", presentationId: "", questionId: ""}, (arg) => console.log(arg))
+  socket.emit("personal:mark-as-read", {groupId: "", presentationId: "", questionId: ""}, (arg) => console.log(arg))
+  socket.on("personal:post-question", (arg) => console.log(arg))
+  socket.on("personal:vote-question", (arg) => console.log(arg))
+  socket.on("personal:mark-as-read", (arg) => console.log(arg))
   //lắng nghe thay đổi topic stat
 </script>
   <body>
