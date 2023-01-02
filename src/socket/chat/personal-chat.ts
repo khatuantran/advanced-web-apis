@@ -62,6 +62,7 @@ export const chatPersonalPresent = async (
       })
     ).map((chat) => {
       return {
+        id: chat.id,
         content: chat.content,
         createdAt: chat.createdAt,
       } as IChat;

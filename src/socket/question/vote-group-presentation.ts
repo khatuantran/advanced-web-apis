@@ -33,17 +33,17 @@ export const voteGroupQuestion = async (
       },
     });
 
-    if (!group || !group.presentationId || group?.presentationId !== data.presentationId) {
-      console.log("group not present");
-      return typeof sendResponseToClient === "function"
-        ? sendResponseToClient({
-            error: {
-              code: "presentation_not_found",
-              message: "Presentation not found",
-            },
-          })
-        : null;
-    }
+    // if (!group || !group.presentationId || group?.presentationId !== data.presentationId) {
+    //   console.log("group not present");
+    //   return typeof sendResponseToClient === "function"
+    //     ? sendResponseToClient({
+    //         error: {
+    //           code: "presentation_not_found",
+    //           message: "Presentation not found",
+    //         },
+    //       })
+    //     : null;
+    // }
 
     const question = await Question.findOne({
       where: {

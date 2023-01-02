@@ -48,6 +48,7 @@ export type IGroupChooseOption = {
 };
 
 export type IChat = {
+  id: string;
   content: string;
   createdAt: Date;
 };
