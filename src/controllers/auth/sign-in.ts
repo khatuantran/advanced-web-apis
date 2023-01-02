@@ -2,8 +2,9 @@ import bcrypt from "bcrypt";
 import "dotenv/config";
 import express from "express";
 import { StatusCodes } from "http-status-codes";
+import Randomstring from "randomstring";
 import { User, UserStatus } from "../../models/user.model";
-import { generateToken } from "../../utils";
+import { generateToken, sendActiveAccountEmail } from "../../utils";
 import { SignInSchema } from "../../validators/signInSchema";
 export const signIn = async (req: express.Request, res: express.Response) => {
   try {
@@ -35,6 +36,12 @@ export const signIn = async (req: express.Request, res: express.Response) => {
     }
 
     if (user.status === UserStatus.IN_ACTIVE) {
+      const activateString = Randomstring.generate(6);
+      await user.update({
+        activateString: activateString,
+      });
+
+      await sendActiveAccountEmail(user.email, activateString);
       return res.status(StatusCodes.FORBIDDEN).json({
         status: StatusCodes.FORBIDDEN,
         error: {

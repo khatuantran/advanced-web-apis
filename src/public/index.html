@@ -141,12 +141,12 @@
 //     answeredQuestionList: [{id: "",  content:"", voteQuantity: "", isAnswer: ""}], 
 //     unAnsweredQuestionList: [{id: "",  content:"", voteQuantity: "", isAnswer: ""}]
 //  }
-  socket.emit("personal:post-question", {groupId: "", presentationId: "", message: ""}, (arg) => console.log(arg))
-  socket.emit("personal:vote-question", {groupId: "", presentationId: "", questionId: ""}, (arg) => console.log(arg))
-  socket.emit("personal:mark-as-read", {groupId: "", presentationId: "", questionId: ""}, (arg) => console.log(arg))
-  socket.on("personal:post-question", (arg) => console.log(arg))
-  socket.on("personal:vote-question", (arg) => console.log(arg))
-  socket.on("personal:mark-as-read", (arg) => console.log(arg))
+  socket.emit("group:post-question", {groupId: "", presentationId: "", message: ""}, (arg) => console.log(arg))
+  socket.emit("group:vote-question", {groupId: "", presentationId: "", questionId: ""}, (arg) => console.log(arg))
+  socket.emit("group:mark-as-read", {groupId: "", presentationId: "", questionId: ""}, (arg) => console.log(arg))
+  socket.on("group:post-question", (arg) => console.log(arg))
+  socket.on("group:vote-question", (arg) => console.log(arg))
+  socket.on("group:mark-as-read", (arg) => console.log(arg))
   //lắng nghe thay đổi topic stat
 </script>
   <body>
