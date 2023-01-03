@@ -34,7 +34,6 @@ export const startGroupPresentation = async (
       await Slide.findAll({
         where: {
           presentationId: data.presentationId,
-          createdBy: socket.userId,
         },
         order: [["createdAt", "ASC"]],
       })
