@@ -30,7 +30,7 @@ export const waitingGroupPresentation = async (
       ],
     });
 
-    let groupPresent: IGroupPresent[];
+    const groupPresent = [] as IGroupPresent[];
     groups.forEach(async (group) => {
       if (group?.group?.presentationId) {
         groupPresent.push({
