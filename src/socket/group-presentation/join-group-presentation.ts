@@ -82,7 +82,7 @@ export const joinGroupPresentation = async (
         },
       });
     }
-    await socket.join(`${data.groupId}`);
+    socket.join(`${data.groupId}`);
     sendResponseToClient(slides);
   } catch (error) {
     console.log(error);

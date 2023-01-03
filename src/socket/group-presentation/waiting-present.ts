@@ -31,7 +31,7 @@ export const waitingGroupPresentation = async (
     });
 
     const groupPresent = [] as IGroupPresent[];
-    groups.forEach(async (group) => {
+    groups.forEach((group) => {
       if (group?.group?.presentationId) {
         groupPresent.push({
           presentationId: group.group.presentationId,
@@ -39,7 +39,7 @@ export const waitingGroupPresentation = async (
           groupName: group.group.name,
         });
       }
-      await socket.join(`${group.groupId}}`);
+      socket.join(`${group.groupId}`);
     });
     console.log("Waiting group present", groupPresent ? groupPresent : []);
     sendResponseToClient(groupPresent ? groupPresent : []);

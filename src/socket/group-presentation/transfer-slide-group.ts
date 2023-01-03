@@ -85,7 +85,7 @@ export const transferSlideGroup = async (
       },
     );
     console.log(`Client ${socket.id} transfer slide ${data.slideId}`);
-    await socket.to(`${data.groupId}`).emit("group:transfer-slide", slides);
+    socket.to(`${data.groupId}`).emit("group:transfer-slide", slides);
     sendResponseToClient(slides);
   } catch (error) {
     console.log(error);
