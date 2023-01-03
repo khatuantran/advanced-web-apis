@@ -1,4 +1,4 @@
-import { Group, Question } from "../../models";
+import { Question } from "../../models";
 import { isHavePermission } from "../../utils";
 import { GroupPresentationData, IQuestion } from "../type";
 
@@ -26,12 +26,12 @@ export const voteGroupQuestion = async (
         },
       });
     }
-    const group = await Group.findOne({
-      where: {
-        id: data.groupId,
-        presentationId: data.presentationId,
-      },
-    });
+    // const group = await Group.findOne({
+    //   where: {
+    //     id: data.groupId,
+    //     presentationId: data.presentationId,
+    //   },
+    // });
 
     // if (!group || !group.presentationId || group?.presentationId !== data.presentationId) {
     //   console.log("group not present");

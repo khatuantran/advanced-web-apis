@@ -1,4 +1,4 @@
-import { Group, Question } from "../../models";
+import { Presentation, Question } from "../../models";
 import { isHavePermission } from "../../utils";
 import { GroupPresentationData, IQuestion } from "../type";
 
@@ -26,12 +26,12 @@ export const postGroupQuestion = async (
         },
       });
     }
-    const group = await Group.findOne({
-      where: {
-        id: data.groupId,
-        presentationId: data.presentationId,
-      },
-    });
+    // const group = await Group.findOne({
+    //   where: {
+    //     id: data.groupId,
+    //     presentationId: data.presentationId,
+    //   },
+    // });
 
     // if (!group || !group.presentationId || group?.presentationId !== data.presentationId) {
     //   console.log("group not present");
@@ -44,6 +44,29 @@ export const postGroupQuestion = async (
     //       })
     //     : null;
     // }
+
+    const presentation = await Presentation.findOne({
+      where: {
+        id: data?.presentationId,
+      },
+    });
+
+    if (!presentation) {
+      return typeof sendResponseToClient === "function"
+        ? sendResponseToClient({
+            error: {
+              code: "presentation_not_found",
+              message: "Presentation not found",
+            },
+          })
+        : null;
+    }
+    await Question.create({
+      presentationId: data?.presentationId,
+      content: data.message,
+      isAnswer: false,
+      voteQuantity: 0,
+    });
 
     const answeredQuestion = [] as IQuestion[];
     const unAnsweredQuestion = [] as IQuestion[];
