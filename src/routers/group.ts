@@ -3,6 +3,7 @@ import {
   assignRole,
   checkGroupPresent,
   createGroup,
+  deleteGroup,
   generateInviteLink,
   getInviteLink,
   groupDetail,
@@ -16,6 +17,7 @@ import {
 const groupRouter = express.Router();
 groupRouter.post("/create", createGroup);
 groupRouter.get("/list-group", listUserGroup);
+groupRouter.post("/delete", deleteGroup);
 groupRouter.get("/:groupId/detail", groupDetail);
 groupRouter.get("/:groupId/get-invite-link", getInviteLink);
 groupRouter.get("/:groupId/generate-invite-link", generateInviteLink);
