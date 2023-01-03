@@ -32,7 +32,6 @@ export const transferSlideGroup = async (
       await Slide.findAll({
         where: {
           presentationId: data.presentationId,
-          createdBy: socket.userId,
         },
         include: [
           {
