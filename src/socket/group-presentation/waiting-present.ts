@@ -1,4 +1,4 @@
-import { Group, UserGroup } from "../../models";
+import { Group, Slide, UserGroup } from "../../models";
 import { IError, IGroupPresent } from "../type";
 
 export const waitingGroupPresentation = async (
@@ -31,12 +31,19 @@ export const waitingGroupPresentation = async (
     });
 
     const groupPresent = [] as IGroupPresent[];
-    groups.forEach((group) => {
+    groups.forEach(async (group) => {
       if (group?.group?.presentationId) {
+        const slide = await Slide.findOne({
+          where: {
+            presentationId: group.group.presentationId,
+            isSelected: true,
+          },
+        });
         groupPresent.push({
           presentationId: group.group.presentationId,
           groupId: group.groupId,
           groupName: group.group.name,
+          slideId: slide.id,
         });
       }
       socket.join(`${group.groupId}`);

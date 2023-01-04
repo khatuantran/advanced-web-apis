@@ -57,6 +57,7 @@ export type IGroupPresent = {
   groupId: string;
   groupName: string;
   presentationId: string;
+  slideId?: string;
 };
 
 export type IQuestion = {
