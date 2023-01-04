@@ -105,6 +105,7 @@ export const startGroupPresentation = async (
       groupId: data.groupId,
       groupName: group.name,
       presentationId: data.presentationId,
+      slideId: data.slideId,
     });
     sendResponseToClient(slides);
   } catch (error) {
