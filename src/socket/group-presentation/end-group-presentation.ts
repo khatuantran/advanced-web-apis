@@ -36,7 +36,7 @@ export const endGroupPresentation = async (
       { where: { id: data.groupId } },
     );
     console.log(`Client ${socket.id} end present ${data.presentationId}`);
-    socket.to(`${data.groupId}`).emit("group:end-present");
+    socket.to(`${data.groupId}`).emit("group:end-present", { groupId: data.groupId });
   } catch (error) {
     console.log(error);
     return typeof sendResponseToClient === "function"
