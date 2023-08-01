@@ -1,7 +1,9 @@
 import express from "express";
 import {
   assignRole,
+  checkGroupPresent,
   createGroup,
+  deleteGroup,
   generateInviteLink,
   getInviteLink,
   groupDetail,
@@ -11,10 +13,11 @@ import {
   listUserGroup,
   sendInvitationEmail,
   transferGroup,
-} from "../controllers/group";
+} from "../controllers";
 const groupRouter = express.Router();
 groupRouter.post("/create", createGroup);
 groupRouter.get("/list-group", listUserGroup);
+groupRouter.post("/delete", deleteGroup);
 groupRouter.get("/:groupId/detail", groupDetail);
 groupRouter.get("/:groupId/get-invite-link", getInviteLink);
 groupRouter.get("/:groupId/generate-invite-link", generateInviteLink);
@@ -24,4 +27,5 @@ groupRouter.post("/:groupId/kick-out", kickOut);
 groupRouter.post("/:groupId/leave-group", leaveGroup);
 groupRouter.post("/:groupId/send-invite-email", sendInvitationEmail);
 groupRouter.get("/join-by-link", joinGroupByLink);
+groupRouter.post("/check-group-present", checkGroupPresent);
 export { groupRouter };

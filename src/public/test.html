@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>
+        
+      body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+
+      #form { background: rgba(0, 0, 0, 0.15); padding: 0.25rem; position: fixed; bottom: 0; left: 0; right: 0; display: flex; height: 3rem; box-sizing: border-box; backdrop-filter: blur(10px); }
+      #input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
+      #input:focus { outline: none; }
+      #form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
+
+      #messages { list-style-type: none; margin: 0; padding: 0; }
+      #messages > li { padding: 0.5rem 1rem; }
+      #messages > li:nth-child(odd) { background: #efefef; }
+    </style>
+  </head>
+  <script src="/socket.io/socket.io.js"></script>
+<script>
+  var socket = io({
+  auth: {
+    token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjAxNTY2YjgzLWUyYTAtNDc5Ny1iZTRiLTJhN2YzOTZhYjNjZSIsInRva2VuQ291bnRlciI6MywiaWF0IjoxNjcyMjMwMDY4LCJleHAiOjE3MDMzMzQwNjh9.PkObOlvy_4WOCOlTOeEPWPL2z2bY1SrQVyV7sorPwbg"
+  }
+});
+  // topic join room - presentationId - slideId
+  socket.emit("group:start-present", {
+      groupId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
+      presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
+      slideId: "60e1e513-4127-459f-8011-bf35f5a7d152"
+    } , (res) => {
+      console.log(res);
+    })
+
+    socket.emit("group:join-present", {
+      groupId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
+      presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
+    } , (res) => {
+      console.log(res);
+    })
+
+    socket.emit("group:transfer-slide", {
+      groupId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
+      presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
+      slideId: "60e1e513-4127-459f-8011-bf35f5a7d152"
+    } , (res) => {
+      console.log(res);
+    })
+
+
+    socket.emit("group:end-present", {
+      groupId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
+      presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
+    } , (res) => {
+      console.log(res);
+    })
+
+    socket.emit("group:choose-option", {
+      groupId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
+      presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
+      slideId: "60e1e513-4127-459f-8011-bf35f5a7d152",
+      index: 1
+    } , (res) => {
+      console.log(res);
+    })
+
+    socket.emit("group:waiting",  (res) => {
+      console.log(res);  // [ {groupId: "", groupName: "", presentationId: ""} ] or []
+    })
+
+  socket.on("group:start-present", (arg) => {
+    console.log(arg);  // { presentationId: "60e1e513-4127-459f-8011-bf35f5a7d152" }
+  })
+
+  socket.on("group:choose-option", (arg) => {
+    console.log(arg);
+  })
+  
+  socket.on("group:end-present", (arg) => {
+    console.log(arg);
+  })
+
+  socket.on("group:transfer-slide", (arg) => {
+    console.log(arg);
+  })
+  const socketClick = () => {
+
+    // topic choose - presentationId - slideId - order
+    socket.emit("group:end-present", {
+      groupId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709",
+      presentationId: "d2b4eaa3-512b-4aff-9f4d-5ac9d6941709", 
+    } , () => {
+      console.log("end present");
+    })
+  }
+
+  //lắng nghe thay đổi topic stat
+</script>
+  <body>
+    <ul id="messages"></ul>
+    <form id="form" action="">
+      <input id="input" autocomplete="off" /><button>Send</button>
+    </form>
+    <button onClick="socketClick()">aaaaa</button>
+  </body>
+</html> 

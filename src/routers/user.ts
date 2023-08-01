@@ -1,6 +1,5 @@
 import express from "express";
-import { changePassword, updateInformation } from "../controllers/user";
-import { getUserProfile } from "../controllers/user/get-profile";
+import { changePassword, getUserProfile, updateInformation } from "../controllers";
 // import { activateAccount } from "../controllers/user/active-account";
 // import { sendActiveCode } from "../controllers/auth/send-code";
 const userRouter = express.Router();

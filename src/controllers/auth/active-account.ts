@@ -1,6 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import { StatusCodes } from "http-status-codes";
+import Randomstring from "randomstring";
 import { User, UserStatus } from "../../models/user.model";
 import { generateToken } from "../../utils";
 export const activateAccount = async (req: express.Request, res: express.Response) => {
@@ -37,8 +38,12 @@ export const activateAccount = async (req: express.Request, res: express.Respons
         },
       });
     }
+
+    const activateString = Randomstring.generate(6);
+
     await user.update({
       status: UserStatus.ACTIVE,
+      activateString: activateString,
     });
 
     const token = generateToken(user.id, user.tokenCounter);

@@ -29,6 +29,7 @@ export const applyPassportStrategy = (passport: PassportStatic) => {
           email: user.email,
           password: user.password,
           tokenCounter: user.tokenCounter,
+          provider: user.provider,
         });
       } catch (err) {
         return done(err, false);

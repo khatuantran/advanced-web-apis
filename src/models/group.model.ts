@@ -1,4 +1,5 @@
 import { BelongsTo, Column, DataType, ForeignKey, Model, PrimaryKey, Table } from "sequelize-typescript";
+import { Presentation } from "./presentation.model";
 import { UserGroup } from "./user-group.model";
 import { User } from "./user.model";
 
@@ -28,6 +29,12 @@ export class Group extends Model<Group> {
 
   @Column
   public status: string;
+
+  @ForeignKey(() => Presentation)
+  @Column
+  public presentationId: string;
+  @BelongsTo(() => Presentation, "presentationId")
+  public presentation: Presentation;
 
   public users: UserGroup[];
 }
